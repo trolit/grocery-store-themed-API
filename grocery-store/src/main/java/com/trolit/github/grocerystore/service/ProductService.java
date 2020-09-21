@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class ProductService {
@@ -24,5 +26,17 @@ public class ProductService {
 
     public List<Product> getAllProducts() {
         return productDao.selectAllProducts();
+    }
+
+    public Optional<Product> getProductById(UUID id) {
+        return productDao.selectProductById(id);
+    }
+
+    public int deleteProduct(UUID id) {
+        return productDao.deleteProductById(id);
+    }
+
+    public int updateProduct(UUID id, Product product) {
+        return productDao.updateProductById(id, product);
     }
 }

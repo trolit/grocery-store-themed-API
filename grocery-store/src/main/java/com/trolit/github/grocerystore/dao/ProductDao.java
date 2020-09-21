@@ -3,6 +3,7 @@ package com.trolit.github.grocerystore.dao;
 import com.trolit.github.grocerystore.model.Product;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface ProductDao {
@@ -15,4 +16,10 @@ public interface ProductDao {
     }
 
     List<Product> selectAllProducts();
+
+    Optional<Product> selectProductById(UUID id);
+
+    int deleteProductById(UUID id);
+
+    int updateProductById(UUID id, Product product);
 }
