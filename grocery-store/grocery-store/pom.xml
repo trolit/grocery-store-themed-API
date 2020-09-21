@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.trolit.github</groupId>
-	<artifactId>grocery-store-api</artifactId>
+	<artifactId>grocery-store</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>grocery-store-api</name>
+	<name>grocery-store</name>
 	<description>Spring Boot project</description>
 
 	<properties>

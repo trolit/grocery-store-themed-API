@@ -1,13 +1,13 @@
-package com.trolit.github.grocerystoreapi;
+package com.trolit.github.grocerystore;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class GroceryStoreApiApplication {
+public class GroceryStoreApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(GroceryStoreApiApplication.class, args);
+		SpringApplication.run(GroceryStoreApplication.class, args);
 	}
 
 }
