@@ -17,4 +17,9 @@ public class FakeProductDataAccessService implements ProductDao {
         DB.add(new Product(id, product.getName()));
         return 1;
     }
+
+    @Override
+    public List<Product> selectAllProducts() {
+        return DB;
+    }
 }

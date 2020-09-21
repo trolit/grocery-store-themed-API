@@ -3,8 +3,11 @@ package com.trolit.github.grocerystore.api;
 import com.trolit.github.grocerystore.model.Product;
 import com.trolit.github.grocerystore.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+@RequestMapping("api/v1/product")
 @RestController
 public class ProductController {
 
@@ -15,7 +18,13 @@ public class ProductController {
         this.productService = productService;
     }
 
-    public void addProduct(Product product) {
+    @PostMapping
+    public void addProduct(@RequestBody Product product) {
         productService.addProduct(product);
+    }
+
+    @GetMapping
+    public List<Product> getAllProducts() {
+        return productService.getAllProducts();
     }
 }
