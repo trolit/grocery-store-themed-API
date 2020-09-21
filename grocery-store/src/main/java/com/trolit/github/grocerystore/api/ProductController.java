@@ -3,8 +3,10 @@ package com.trolit.github.grocerystore.api;
 import com.trolit.github.grocerystore.model.Product;
 import com.trolit.github.grocerystore.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,7 +22,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public void addProduct(@RequestBody Product product) {
+    public void addProduct(@Valid @NonNull @RequestBody Product product) {
         productService.addProduct(product);
     }
 
@@ -41,7 +43,7 @@ public class ProductController {
     }
 
     @PutMapping(path = "{id}")
-    public void updateProduct(@PathVariable("id") UUID id, @RequestBody Product productToUpdate) {
+    public void updateProduct(@PathVariable("id") UUID id, @Valid @NonNull @RequestBody Product productToUpdate) {
         productService.updateProduct(id, productToUpdate);
     }
 }
