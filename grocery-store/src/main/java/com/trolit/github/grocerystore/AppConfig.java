@@ -25,6 +25,15 @@ public class AppConfig {
 
     @Bean
     public ModelMapper modelMapper() {
-        return new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();
+        AddProductCustomMappings(modelMapper);
+        return modelMapper;
+    }
+
+    private void AddProductCustomMappings(ModelMapper modelMapper) {
+        modelMapper.typeMap(Product.class, ProductQueryDto.class).addMappings(mapper -> {
+           mapper.map(src -> src.getCategory().getName(), (dest, v) -> dest.setCategory((String) v));
+           mapper.map(src -> src.getCategory().getId(), (dest, v) -> dest.setCategoryId((Integer) v));
+        });
     }
 }
