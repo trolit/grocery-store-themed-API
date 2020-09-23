@@ -1,6 +1,6 @@
-package com.trolit.github.grocerystore.services;
+package com.trolit.github.grocerystore.services.product;
 
-import com.trolit.github.grocerystore.dto.ProductQueryDto;
+import com.trolit.github.grocerystore.dto.product.ProductQueryDto;
 import com.trolit.github.grocerystore.models.Product;
 import com.trolit.github.grocerystore.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;

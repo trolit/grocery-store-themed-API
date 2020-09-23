@@ -1,9 +1,9 @@
-package com.trolit.github.grocerystore.controllers;
+package com.trolit.github.grocerystore.controllers.product;
 
-import com.trolit.github.grocerystore.dto.ProductCreateDto;
-import com.trolit.github.grocerystore.dto.ProductQueryDto;
-import com.trolit.github.grocerystore.dto.ProductUpdateDto;
-import com.trolit.github.grocerystore.services.ProductCommandService;
+import com.trolit.github.grocerystore.dto.product.ProductCreateDto;
+import com.trolit.github.grocerystore.dto.product.ProductQueryDto;
+import com.trolit.github.grocerystore.dto.product.ProductUpdateDto;
+import com.trolit.github.grocerystore.services.product.ProductCommandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

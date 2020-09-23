@@ -1,6 +1,6 @@
-package com.trolit.github.grocerystore.dto;
+package com.trolit.github.grocerystore.dto.category;
 
-public class ProductUpdateDto {
+public class CategoryCreateDto {
     private String name;
 
     public String getName() {

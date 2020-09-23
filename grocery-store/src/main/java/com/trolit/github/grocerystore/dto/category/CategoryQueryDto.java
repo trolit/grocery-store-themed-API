@@ -1,11 +1,11 @@
-package com.trolit.github.grocerystore.dto;
+package com.trolit.github.grocerystore.dto.category;
 
-public class ProductQueryDto {
+public class CategoryQueryDto {
     private Integer id;
 
     private String name;
 
-    public ProductQueryDto(Integer id, String name) {
+    public CategoryQueryDto(Integer id, String name) {
         this.id = id;
         this.name = name;
     }

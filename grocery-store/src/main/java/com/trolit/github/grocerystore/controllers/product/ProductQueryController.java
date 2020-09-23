@@ -1,7 +1,7 @@
-package com.trolit.github.grocerystore.controllers;
+package com.trolit.github.grocerystore.controllers.product;
 
-import com.trolit.github.grocerystore.dto.ProductQueryDto;
-import com.trolit.github.grocerystore.services.ProductQueryService;
+import com.trolit.github.grocerystore.dto.product.ProductQueryDto;
+import com.trolit.github.grocerystore.services.product.ProductQueryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -41,7 +41,7 @@ public class ProductQueryController {
                     .status(HttpStatus.NOT_FOUND)
                     .body(null);
         } else {
-            return new ResponseEntity<>(productQueryService.getProduct(id), HttpStatus.OK);
+            return new ResponseEntity<>(product, HttpStatus.OK);
         }
     }
 }

@@ -1,8 +1,8 @@
-package com.trolit.github.grocerystore.services;
+package com.trolit.github.grocerystore.services.product;
 
-import com.trolit.github.grocerystore.dto.ProductCreateDto;
-import com.trolit.github.grocerystore.dto.ProductQueryDto;
-import com.trolit.github.grocerystore.dto.ProductUpdateDto;
+import com.trolit.github.grocerystore.dto.product.ProductCreateDto;
+import com.trolit.github.grocerystore.dto.product.ProductQueryDto;
+import com.trolit.github.grocerystore.dto.product.ProductUpdateDto;
 import com.trolit.github.grocerystore.models.Product;
 import com.trolit.github.grocerystore.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +22,10 @@ public class ProductCommandServiceImpl implements  ProductCommandService {
     public int createProduct(ProductCreateDto productCreateDto) {
         Product product = new Product();
         product.setName(productCreateDto.getName());
+        product.setPrice(productCreateDto.getPrice());
+        product.setStock(productCreateDto.getStock());
+        // check if that category exists!
+        // product.setCategory(new Category());
         return productRepository.save(product).getId();
     }
 
@@ -30,6 +34,8 @@ public class ProductCommandServiceImpl implements  ProductCommandService {
         if (productRepository.findById(id).isPresent()) {
             Product product = productRepository.findById(id).get();
             product.setName(productUpdateDto.getName());
+            product.setPrice(productUpdateDto.getPrice());
+            product.setStock(productUpdateDto.getStock());
             Product updatedProduct = productRepository.save(product);
             return new ProductQueryDto(updatedProduct.getId(), updatedProduct.getName());
         } else {
