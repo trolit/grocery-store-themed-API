@@ -22,8 +22,9 @@ public class ProductQueryController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProductQueryDto>> getAllProducts(){
-        List<ProductQueryDto> products = productQueryService.getAllProducts();
+    public ResponseEntity<List<ProductQueryDto>> getAllProducts(
+            @RequestParam(value = "search", required = false) String search) {
+        List<ProductQueryDto> products = productQueryService.getAllProducts(search);
         if (products.size() <= 0) {
             return ResponseEntity
                     .status(HttpStatus.NO_CONTENT)

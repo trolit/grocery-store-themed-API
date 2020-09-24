@@ -7,5 +7,5 @@ import java.util.List;
 public interface ProductQueryService {
     ProductQueryDto getProduct(int id);
 
-    List<ProductQueryDto> getAllProducts();
+    List<ProductQueryDto> getAllProducts(String search);
 }
