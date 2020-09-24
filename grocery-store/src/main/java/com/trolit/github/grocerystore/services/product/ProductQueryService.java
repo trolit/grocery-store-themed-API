@@ -5,7 +5,7 @@ import com.trolit.github.grocerystore.dto.product.ProductQueryDto;
 import java.util.List;
 
 public interface ProductQueryService {
-    public ProductQueryDto getProduct(int id);
+    ProductQueryDto getProduct(int id);
 
-    public List<ProductQueryDto> getAllProducts();
+    List<ProductQueryDto> getAllProducts();
 }

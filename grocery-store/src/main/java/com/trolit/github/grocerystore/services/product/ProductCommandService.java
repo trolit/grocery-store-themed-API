@@ -5,9 +5,9 @@ import com.trolit.github.grocerystore.dto.product.ProductQueryDto;
 import com.trolit.github.grocerystore.dto.product.ProductUpdateDto;
 
 public interface ProductCommandService {
-    public int createProduct(ProductCreateDto productCreateDto);
+    int createProduct(ProductCreateDto productCreateDto);
 
-    public ProductQueryDto updateProduct(int id, ProductUpdateDto productUpdateDto);
+    ProductQueryDto updateProduct(int id, ProductUpdateDto productUpdateDto);
 
-    public int deleteProduct(int id);
+    int deleteProduct(int id);
 }
