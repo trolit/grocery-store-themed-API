@@ -5,6 +5,7 @@ import com.trolit.github.grocerystore.dto.category.CategoryQueryDto;
 import com.trolit.github.grocerystore.dto.category.CategoryUpdateDto;
 import com.trolit.github.grocerystore.models.Category;
 import com.trolit.github.grocerystore.repositories.CategoryRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,26 +13,30 @@ import org.springframework.stereotype.Service;
 public class CategoryCommandServiceImpl implements CategoryCommandService {
 
     private final CategoryRepository categoryRepository;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public CategoryCommandServiceImpl(CategoryRepository categoryRepository) {
+    public CategoryCommandServiceImpl(CategoryRepository categoryRepository,
+                                      ModelMapper modelMapper) {
         this.categoryRepository = categoryRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
     public int createCategory(CategoryCreateDto categoryCreateDto) {
-        Category category = new Category();
-        category.setName(categoryCreateDto.getName());
-        return categoryRepository.save(category).getId();
+        return categoryRepository.save(
+                modelMapper.map(categoryCreateDto, Category.class))
+                .getId();
     }
 
     @Override
     public CategoryQueryDto updateCategory(int id, CategoryUpdateDto categoryUpdateDto) {
-        if (categoryRepository.findById(id).isPresent()) {
-            Category category = categoryRepository.findById(id).get();
-            category.setName(categoryUpdateDto.getName());
+        boolean isCategoryPresent = categoryRepository.findById(id).isPresent();
+        if (isCategoryPresent) {
+            Category category = modelMapper.map(categoryUpdateDto, Category.class);
+            category.setId(id);
             Category updatedCategory = categoryRepository.save(category);
-            return new CategoryQueryDto(updatedCategory.getId(), updatedCategory.getName());
+            return modelMapper.map(updatedCategory, CategoryQueryDto.class);
         } else {
             return null;
         }

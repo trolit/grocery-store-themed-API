@@ -1,7 +1,7 @@
 package com.trolit.github.grocerystore.dto.category;
 
 public class BaseCategoryDto {
-    private String name;
+    protected String name;
 
     public String getName() {
         return name;

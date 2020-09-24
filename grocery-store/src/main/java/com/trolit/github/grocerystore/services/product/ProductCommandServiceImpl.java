@@ -44,6 +44,7 @@ public class ProductCommandServiceImpl implements  ProductCommandService {
         boolean isCategoryPresent = categoryRepository.findById(productUpdateDto.getCategoryId()).isPresent();
         if (isProductPresent && isCategoryPresent) {
             Product product = modelMapper.map(productUpdateDto, Product.class);
+            product.setId(id);
             product.setCategory(categoryRepository.findById(productUpdateDto.getCategoryId()).get());
             Product updatedProduct = productRepository.save(product);
             return modelMapper.map(updatedProduct, ProductQueryDto.class);

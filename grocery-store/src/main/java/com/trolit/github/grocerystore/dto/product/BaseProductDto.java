@@ -7,18 +7,18 @@ public class BaseProductDto {
 
     @NotEmpty(message = "Product name cannot be empty.")
     @Size(min = 3, message = "Product name must have at least 3 letters.")
-    private String name;
+    protected String name;
 
     @NotNull
     @Digits(integer=4, fraction=2, message = "Maximum allowed possible value for price is: 9999.99")
-    private BigDecimal price;
+    protected BigDecimal price;
 
     @NotNull
     @Min(value = 0, message = "Stock size must be set to minimum 0.")
-    private Integer stock;
+    protected Integer stock;
 
     @NotNull
-    private Integer categoryId;
+    protected Integer categoryId;
 
     // getters and setters
 
