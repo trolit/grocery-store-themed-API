@@ -38,4 +38,8 @@ public class ProductPredicatesBuilder {
 
         return result;
     }
+
+    public Integer getParamsSize() {
+        return params.size();
+    }
 }
