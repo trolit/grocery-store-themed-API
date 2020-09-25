@@ -24,6 +24,10 @@ public class BaseProductDto {
     protected Integer categoryId;
 
     @NotNull
+    @EnumValidator(
+            enumClazz = MeasurementEnum.class,
+            message = "This error is coming from the enum class"
+    )
     protected String measurement;
 
     // getters and setters
