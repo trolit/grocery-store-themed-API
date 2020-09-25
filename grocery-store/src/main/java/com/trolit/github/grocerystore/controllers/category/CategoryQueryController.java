@@ -36,7 +36,7 @@ public class CategoryQueryController {
         }
     }
 
-    @GetMapping(path = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "{id}")
     public ResponseEntity<CategoryQueryDto> getCategory(@PathVariable(value = "id") int id){
         CategoryQueryDto category = categoryQueryService.getCategory(id);
         if(category == null) {

@@ -34,7 +34,7 @@ public class ProductQueryController {
         }
     }
 
-    @GetMapping(path = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "{id}")
     public ResponseEntity<ProductQueryDto> getProduct(@PathVariable(value = "id") int id){
         ProductQueryDto product = productQueryService.getProduct(id);
         if(product == null) {
