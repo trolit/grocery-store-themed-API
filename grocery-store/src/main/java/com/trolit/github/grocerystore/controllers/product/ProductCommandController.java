@@ -3,6 +3,7 @@ package com.trolit.github.grocerystore.controllers.product;
 import com.trolit.github.grocerystore.dto.product.ProductCreateDto;
 import com.trolit.github.grocerystore.dto.product.ProductQueryDto;
 import com.trolit.github.grocerystore.dto.product.ProductUpdateDto;
+import com.trolit.github.grocerystore.dto.product.ProductsOrderDto;
 import com.trolit.github.grocerystore.services.product.ProductCommandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -52,6 +53,26 @@ public class ProductCommandController {
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
                     .body("Product with given Id not found.");
+        }
+    }
+
+    @PostMapping(path = "order")
+    public ResponseEntity<String> buyProducts(@RequestBody ProductsOrderDto productsOrderDto) {
+        if (productsOrderDto.getOrder().size() <= 0) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("Order aborted. No products given.");
+        }
+        int result = productCommandService.buyProducts(productsOrderDto.getOrder());
+        if (result == 1) {
+            return ResponseEntity
+                    .status(HttpStatus.NO_CONTENT)
+                    .body(null);
+        } else {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("Order cancelled. One of the product does not exist or it's stock is not " +
+                            "big enough to complete order.");
         }
     }
 }

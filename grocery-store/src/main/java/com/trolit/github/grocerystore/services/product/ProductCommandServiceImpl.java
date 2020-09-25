@@ -10,6 +10,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+import static java.lang.Integer.parseInt;
+
 @Service
 public class ProductCommandServiceImpl implements  ProductCommandService {
 
@@ -63,4 +67,59 @@ public class ProductCommandServiceImpl implements  ProductCommandService {
         }
     }
 
+    @Override
+    public int buyProducts(List<String> productsWithQuantity) {
+        boolean isOrderPossible = checkIfProductsOrderIsPossible(productsWithQuantity);
+        if (isOrderPossible) {
+            for (int i = 0; i < productsWithQuantity.size(); i++) {
+                if (i + 1 >= productsWithQuantity.size()) {
+                    break;
+                }
+                int productId = parseInt(productsWithQuantity.get(i));
+                int quantity = parseInt(productsWithQuantity.get(i + 1));
+                updateProductStock(productId, quantity);
+            }
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    private int getCurrentStockValue(int productStock, int quantity) {
+        return productStock - quantity;
+    }
+
+    private boolean checkIfProductsOrderIsPossible(List<String> productsWithQuantity) {
+        boolean flag = false;
+        for (int i = 0; i < productsWithQuantity.size(); i++) {
+            if (i + 1 >= productsWithQuantity.size()) {
+                break;
+            }
+            int productId = parseInt(productsWithQuantity.get(i));
+            int quantity = parseInt(productsWithQuantity.get(i + 1));
+            boolean isProductPresent = productRepository.findById(productId).isPresent();
+            if (isProductPresent) {
+                Product product = productRepository.findById(productId).get();
+                int currentStockValue = getCurrentStockValue(product.getStock(), quantity);
+                if(currentStockValue >= 0) {
+                    flag = true;
+                } else {
+                    flag = false;
+                    break;
+                }
+            } else {
+                flag = false;
+                break;
+            }
+        }
+        return flag;
+    }
+
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
+    private void updateProductStock(int productId, int quantity) {
+        Product product = productRepository.findById(productId).get();
+        int currentStock = product.getStock() - quantity;
+        product.setStock(currentStock);
+        productRepository.save(product);
+    }
 }
