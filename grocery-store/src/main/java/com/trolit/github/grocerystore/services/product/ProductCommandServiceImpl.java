@@ -97,6 +97,10 @@ public class ProductCommandServiceImpl implements  ProductCommandService {
             }
             int productId = parseInt(productsWithQuantity.get(i));
             int quantity = parseInt(productsWithQuantity.get(i + 1));
+            if (quantity < 0) {
+                flag = false;
+                break;
+            }
             boolean isProductPresent = productRepository.findById(productId).isPresent();
             if (isProductPresent) {
                 Product product = productRepository.findById(productId).get();
