@@ -16,6 +16,8 @@ public class ProductQueryDto {
 
     private Integer categoryId;
 
+    private String measurement;
+
     // getters and setters
 
     public Integer getId() {
@@ -66,4 +68,11 @@ public class ProductQueryDto {
         this.categoryId = categoryId;
     }
 
+    public String getMeasurement() {
+        return measurement;
+    }
+
+    public void setMeasurement(String measurement) {
+        this.measurement = measurement;
+    }
 }

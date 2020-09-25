@@ -1,5 +1,8 @@
 package com.trolit.github.grocerystore.dto.product;
 
+import com.trolit.github.grocerystore.customValidators.EnumValidator;
+import com.trolit.github.grocerystore.enums.MeasurementEnum;
+
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
 
@@ -19,6 +22,9 @@ public class BaseProductDto {
 
     @NotNull
     protected Integer categoryId;
+
+    @NotNull
+    protected String measurement;
 
     // getters and setters
 
@@ -54,4 +60,11 @@ public class BaseProductDto {
         this.categoryId = categoryId;
     }
 
+    public String getMeasurement() {
+        return measurement;
+    }
+
+    public void setMeasurement(String measurement) {
+        this.measurement = measurement;
+    }
 }

@@ -24,6 +24,9 @@ public class Product {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
+    @Column(nullable = false)
+    private String measurement;
+
     // getters and setters
 
     public Integer getId() {
@@ -66,4 +69,11 @@ public class Product {
         this.category = category;
     }
 
+    public String getMeasurement() {
+        return measurement;
+    }
+
+    public void setMeasurement(String measurement) {
+        this.measurement = measurement;
+    }
 }
