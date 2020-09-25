@@ -40,4 +40,5 @@ public class CategoryQueryServiceImpl implements  CategoryQueryService {
                 categoriesList.add(modelMapper.map(category, CategoryQueryDto.class)));
         return categoriesList;
     }
+
 }

@@ -65,4 +65,5 @@ public class ProductQueryDto {
     public void setCategoryId(Integer categoryId) {
         this.categoryId = categoryId;
     }
+
 }

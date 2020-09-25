@@ -1,6 +1,7 @@
 package com.trolit.github.grocerystore.dto.category;
 
 public class CategoryQueryDto {
+
     private Integer id;
 
     private String name;
@@ -22,4 +23,5 @@ public class CategoryQueryDto {
     public void setName(String name) {
         this.name = name;
     }
+
 }

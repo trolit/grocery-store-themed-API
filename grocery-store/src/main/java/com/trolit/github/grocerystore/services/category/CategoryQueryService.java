@@ -5,7 +5,9 @@ import com.trolit.github.grocerystore.dto.category.CategoryQueryDto;
 import java.util.List;
 
 public interface CategoryQueryService {
+
     CategoryQueryDto getCategory(int id);
 
     List<CategoryQueryDto> getAllCategories();
+
 }

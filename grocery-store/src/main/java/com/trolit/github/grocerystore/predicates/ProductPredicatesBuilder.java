@@ -10,6 +10,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class ProductPredicatesBuilder {
+
     private final List<SearchCriteria> params;
 
     public ProductPredicatesBuilder() {
@@ -42,4 +43,5 @@ public class ProductPredicatesBuilder {
     public Integer getParamsSize() {
         return params.size();
     }
+
 }

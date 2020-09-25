@@ -111,4 +111,5 @@ public class ProductQueryServiceImpl implements  ProductQueryService {
         QProduct product = QProduct.product;
         return product.category.name.eq(categoryName);
     }
+
 }

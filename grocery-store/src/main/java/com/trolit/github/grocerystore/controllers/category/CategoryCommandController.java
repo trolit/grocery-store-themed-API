@@ -6,7 +6,6 @@ import com.trolit.github.grocerystore.dto.category.CategoryUpdateDto;
 import com.trolit.github.grocerystore.services.category.CategoryCommandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,10 +24,11 @@ public class CategoryCommandController {
 
     @PostMapping
     public ResponseEntity<Integer> createCategory(@Valid @RequestBody CategoryCreateDto categoryCreateDto){
-        return new ResponseEntity<>(categoryCommandService.createCategory(categoryCreateDto), HttpStatus.CREATED);
+        return new ResponseEntity<>(
+                categoryCommandService.createCategory(categoryCreateDto), HttpStatus.CREATED);
     }
 
-    @PutMapping(path = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(path = "{id}")
     public ResponseEntity<CategoryQueryDto> updateCategory(@PathVariable(value = "id") int id,
                                                           @RequestBody CategoryUpdateDto categoryUpdateDto) {
         CategoryQueryDto categoryQueryDto = categoryCommandService.updateCategory(id, categoryUpdateDto);

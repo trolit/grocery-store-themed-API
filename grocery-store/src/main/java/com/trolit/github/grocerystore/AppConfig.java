@@ -36,4 +36,5 @@ public class AppConfig {
            mapper.map(src -> src.getCategory().getId(), (dest, v) -> dest.setCategoryId((Integer) v));
         });
     }
+
 }

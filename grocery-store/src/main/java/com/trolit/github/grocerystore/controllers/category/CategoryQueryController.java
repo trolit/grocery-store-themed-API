@@ -4,7 +4,6 @@ import com.trolit.github.grocerystore.dto.category.CategoryQueryDto;
 import com.trolit.github.grocerystore.services.category.CategoryQueryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

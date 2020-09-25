@@ -55,4 +55,5 @@ public class ProductPredicate {
         }
         return true;
     }
+
 }

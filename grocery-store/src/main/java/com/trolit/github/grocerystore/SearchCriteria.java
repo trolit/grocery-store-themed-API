@@ -1,6 +1,7 @@
 package com.trolit.github.grocerystore;
 
 public class SearchCriteria {
+
     private String key;
 
     private String operation;
@@ -36,4 +37,5 @@ public class SearchCriteria {
     public void setValue(Object value) {
         this.value = value;
     }
+
 }

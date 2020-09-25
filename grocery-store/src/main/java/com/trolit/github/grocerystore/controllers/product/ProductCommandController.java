@@ -6,7 +6,6 @@ import com.trolit.github.grocerystore.dto.product.ProductUpdateDto;
 import com.trolit.github.grocerystore.services.product.ProductCommandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,10 +24,11 @@ public class ProductCommandController {
 
     @PostMapping
     public ResponseEntity<Integer> createProduct(@Valid @RequestBody ProductCreateDto productCreateDto){
-        return new ResponseEntity<>(productCommandService.createProduct(productCreateDto), HttpStatus.CREATED);
+        return new ResponseEntity<>(
+                productCommandService.createProduct(productCreateDto), HttpStatus.CREATED);
     }
 
-    @PutMapping(path = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(path = "{id}")
     public ResponseEntity<ProductQueryDto> updateProduct(@PathVariable(value = "id") int id,
                                                          @RequestBody ProductUpdateDto productUpdateDTO) {
         ProductQueryDto productQueryDto = productCommandService.updateProduct(id, productUpdateDTO);

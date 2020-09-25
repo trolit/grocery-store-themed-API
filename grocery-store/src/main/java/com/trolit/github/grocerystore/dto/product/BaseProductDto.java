@@ -53,4 +53,5 @@ public class BaseProductDto {
     public void setCategoryId(Integer categoryId) {
         this.categoryId = categoryId;
     }
+
 }
