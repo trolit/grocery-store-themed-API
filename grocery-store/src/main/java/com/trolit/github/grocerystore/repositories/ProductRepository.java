@@ -14,8 +14,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProductRepository extends CrudRepository<Product, Integer>,
         QuerydslPredicateExecutor<Product>, QuerydslBinderCustomizer<QProduct> {
+
+    @SuppressWarnings("NullableProblems")
     @Override
-    default public void customize(final QuerydslBindings bindings, final QProduct root) {
+    default void customize(final QuerydslBindings bindings, final QProduct root) {
         bindings.bind(String.class)
                 .first((SingleValueBinding<StringPath, String>) StringExpression::containsIgnoreCase);
     }

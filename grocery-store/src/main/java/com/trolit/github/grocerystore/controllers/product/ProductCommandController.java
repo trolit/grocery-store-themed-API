@@ -1,9 +1,6 @@
 package com.trolit.github.grocerystore.controllers.product;
 
-import com.trolit.github.grocerystore.dto.product.ProductCreateDto;
-import com.trolit.github.grocerystore.dto.product.ProductQueryDto;
-import com.trolit.github.grocerystore.dto.product.ProductUpdateDto;
-import com.trolit.github.grocerystore.dto.product.ProductsOrderDto;
+import com.trolit.github.grocerystore.dto.product.*;
 import com.trolit.github.grocerystore.services.product.ProductCommandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -73,6 +70,21 @@ public class ProductCommandController {
                     .status(HttpStatus.BAD_REQUEST)
                     .body("Order cancelled. One of the product does not exist or it's stock is not " +
                             "big enough to complete order.");
+        }
+    }
+
+    @PatchMapping(path = "{id}")
+    public ResponseEntity<String> partialUpdateProductStock(@PathVariable(value = "id") int id,
+                                                            @Valid @RequestBody ProductStockOnlyDto productStockOnlyDto) {
+        int result = productCommandService.setProductStock(id, productStockOnlyDto);
+        if (result == 1) {
+            return ResponseEntity
+                    .status(HttpStatus.NO_CONTENT)
+                    .body(null);
+        } else {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("Product not found. Setting product stock failed.");
         }
     }
 }

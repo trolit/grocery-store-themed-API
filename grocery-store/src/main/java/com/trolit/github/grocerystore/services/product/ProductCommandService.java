@@ -2,6 +2,7 @@ package com.trolit.github.grocerystore.services.product;
 
 import com.trolit.github.grocerystore.dto.product.ProductCreateDto;
 import com.trolit.github.grocerystore.dto.product.ProductQueryDto;
+import com.trolit.github.grocerystore.dto.product.ProductStockOnlyDto;
 import com.trolit.github.grocerystore.dto.product.ProductUpdateDto;
 
 import java.util.List;
@@ -15,4 +16,6 @@ public interface ProductCommandService {
     int deleteProduct(int id);
 
     int buyProducts(List<String> productsWithQuantity);
+
+    int setProductStock(int id, ProductStockOnlyDto productStockOnlyDto);
 }

@@ -75,4 +75,5 @@ public class ProductQueryDto {
     public void setMeasurement(String measurement) {
         this.measurement = measurement;
     }
+
 }

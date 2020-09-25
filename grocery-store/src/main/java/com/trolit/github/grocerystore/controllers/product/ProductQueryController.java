@@ -36,7 +36,7 @@ public class ProductQueryController {
     @GetMapping(path = "{id}")
     public ResponseEntity<ProductQueryDto> getProduct(@PathVariable(value = "id") int id){
         ProductQueryDto product = productQueryService.getProduct(id);
-        if(product == null) {
+        if (product == null) {
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
                     .body(null);

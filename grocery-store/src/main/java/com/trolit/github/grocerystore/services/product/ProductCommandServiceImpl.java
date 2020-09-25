@@ -2,6 +2,7 @@ package com.trolit.github.grocerystore.services.product;
 
 import com.trolit.github.grocerystore.dto.product.ProductCreateDto;
 import com.trolit.github.grocerystore.dto.product.ProductQueryDto;
+import com.trolit.github.grocerystore.dto.product.ProductStockOnlyDto;
 import com.trolit.github.grocerystore.dto.product.ProductUpdateDto;
 import com.trolit.github.grocerystore.models.Product;
 import com.trolit.github.grocerystore.repositories.CategoryRepository;
@@ -15,7 +16,7 @@ import java.util.List;
 import static java.lang.Integer.parseInt;
 
 @Service
-public class ProductCommandServiceImpl implements  ProductCommandService {
+public class ProductCommandServiceImpl implements ProductCommandService {
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
@@ -85,6 +86,19 @@ public class ProductCommandServiceImpl implements  ProductCommandService {
         }
     }
 
+    @Override
+    public int setProductStock(int id, ProductStockOnlyDto productStockOnlyDto) {
+        boolean isProductPresent = productRepository.findById(id).isPresent();
+        if (isProductPresent) {
+            Product product = productRepository.findById(id).get();
+            product.setStock(productStockOnlyDto.getStock());
+            productRepository.save(product);
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
     private int getCurrentStockValue(int productStock, int quantity) {
         return productStock - quantity;
     }
@@ -105,7 +119,7 @@ public class ProductCommandServiceImpl implements  ProductCommandService {
             if (isProductPresent) {
                 Product product = productRepository.findById(productId).get();
                 int currentStockValue = getCurrentStockValue(product.getStock(), quantity);
-                if(currentStockValue >= 0) {
+                if (currentStockValue >= 0) {
                     flag = true;
                 } else {
                     flag = false;
