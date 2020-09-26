@@ -8,7 +8,7 @@ Optional data filtering <br/>
 </ul>
 <br/>
 Examples <br/>
-<small>Get products that category id is 1 and price is greater than 50</small> <br/>
+<small>Get products that category id is 1 and price is greater than 50 <strong>(chained conditions using comma)</strong></small> <br/>
 <small>/products?search=categoryId:1,price>50</small> <br/><br/>
 <small>Get products with kg measurement</small> <br/>
 <small>/products?search=measurement:kg </small>
