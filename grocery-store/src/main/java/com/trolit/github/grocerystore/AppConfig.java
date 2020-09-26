@@ -8,8 +8,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
+
+import java.util.Collections;
 
 import static com.trolit.github.grocerystore.converters.StringConverters.basicPropertyConverter;
 
@@ -23,7 +27,21 @@ public class AppConfig {
                 .select()
                 .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
                 .paths(PathSelectors.any())
-                .build();
+                .build()
+                .apiInfo(getApiInfo());
+    }
+
+    private ApiInfo getApiInfo() {
+        return new ApiInfo(
+                "Grocery Store API",
+                "API for educational purposes",
+                "v1",
+                "",
+                new Contact("Source","https://github.com/trolit/grocery-store-themed-API",""),
+                "License: MIT",
+                "https://github.com/trolit/grocery-store-themed-API/blob/master/LICENSE",
+                Collections.emptyList()
+        );
     }
 
     @Bean
