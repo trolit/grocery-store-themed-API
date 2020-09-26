@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+// https://www.baeldung.com/rest-api-search-language-spring-data-querydsl
+
 public class ProductPredicatesBuilder {
 
     private final List<SearchCriteria> params;
