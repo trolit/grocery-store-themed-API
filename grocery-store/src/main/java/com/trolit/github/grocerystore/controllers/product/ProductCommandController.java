@@ -87,4 +87,19 @@ public class ProductCommandController {
                     .body("Product not found. Setting product stock failed.");
         }
     }
+
+    @PostMapping(path = "{id}")
+    public ResponseEntity<String> changeProductPriceByPercentage(@PathVariable(value = "id") int id,
+                                                                 @Valid @RequestBody ProductPriceChangeDto productPriceChangeDto) {
+        int result = productCommandService.changeProductPriceByPercentage(id, productPriceChangeDto);
+        if (result == 1) {
+            return ResponseEntity
+                    .status(HttpStatus.NO_CONTENT)
+                    .body(null);
+        } else {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("Changing product price by percentage failed.");
+        }
+    }
 }

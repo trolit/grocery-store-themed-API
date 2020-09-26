@@ -1,9 +1,6 @@
 package com.trolit.github.grocerystore.services.product;
 
-import com.trolit.github.grocerystore.dto.product.ProductCreateDto;
-import com.trolit.github.grocerystore.dto.product.ProductQueryDto;
-import com.trolit.github.grocerystore.dto.product.ProductStockOnlyDto;
-import com.trolit.github.grocerystore.dto.product.ProductUpdateDto;
+import com.trolit.github.grocerystore.dto.product.*;
 import com.trolit.github.grocerystore.models.Product;
 import com.trolit.github.grocerystore.repositories.CategoryRepository;
 import com.trolit.github.grocerystore.repositories.ProductRepository;
@@ -11,6 +8,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 import static java.lang.Integer.parseInt;
@@ -45,9 +44,8 @@ public class ProductCommandServiceImpl implements ProductCommandService {
 
     @Override
     public ProductQueryDto updateProduct(int id, ProductUpdateDto productUpdateDto) {
-        boolean isProductPresent = productRepository.findById(id).isPresent();
         boolean isCategoryPresent = categoryRepository.findById(productUpdateDto.getCategoryId()).isPresent();
-        if (isProductPresent && isCategoryPresent) {
+        if (isProductPresent(id) && isCategoryPresent) {
             Product product = modelMapper.map(productUpdateDto, Product.class);
             product.setId(id);
             product.setCategory(categoryRepository.findById(productUpdateDto.getCategoryId()).get());
@@ -60,7 +58,7 @@ public class ProductCommandServiceImpl implements ProductCommandService {
 
     @Override
     public int deleteProduct(int id) {
-        if (productRepository.findById(id).isPresent()) {
+        if (isProductPresent(id)) {
             productRepository.deleteById(id);
             return 1;
         } else {
@@ -88,15 +86,38 @@ public class ProductCommandServiceImpl implements ProductCommandService {
 
     @Override
     public int setProductStock(int id, ProductStockOnlyDto productStockOnlyDto) {
-        boolean isProductPresent = productRepository.findById(id).isPresent();
-        if (isProductPresent) {
-            Product product = productRepository.findById(id).get();
+        if (isProductPresent(id)) {
+            Product product = getProductById(id);
             product.setStock(productStockOnlyDto.getStock());
             productRepository.save(product);
             return 1;
         } else {
             return 0;
         }
+    }
+
+    @Override
+    public int changeProductPriceByPercentage(int id, ProductPriceChangeDto productPriceChangeDto) {
+        if (isProductPresent(id)) {
+            Product product = getProductById(id);
+            BigDecimal newPrice = product.getPrice()
+                    .multiply(new BigDecimal(productPriceChangeDto.getPercentage()))
+                    .divide(new BigDecimal(100), 2, RoundingMode.HALF_UP);
+            product.setPrice(newPrice);
+            productRepository.save(product);
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    private boolean isProductPresent(int id) {
+        return productRepository.findById(id).isPresent();
+    }
+
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
+    private Product getProductById(int id) {
+        return productRepository.findById(id).get();
     }
 
     private int getCurrentStockValue(int productStock, int quantity) {
