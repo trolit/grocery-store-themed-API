@@ -34,8 +34,8 @@ public class ProductCommandController {
         int result = productCommandService.createProduct(productCreateDto);
         if (result == 0) {
             return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body(null);
+                    .badRequest()
+                    .build();
         } else {
             return new ResponseEntity<>(
                     productCommandService.createProduct(productCreateDto), HttpStatus.CREATED);
@@ -53,8 +53,8 @@ public class ProductCommandController {
         ProductQueryDto productQueryDto = productCommandService.updateProduct(id, productUpdateDTO);
         if (productQueryDto == null) {
             return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body(null);
+                    .notFound()
+                    .build();
         } else {
             return new ResponseEntity<>(productQueryDto, HttpStatus.OK);
         }
@@ -66,16 +66,16 @@ public class ProductCommandController {
             @ApiResponse(code = 204, message = "Product deleted"),
             @ApiResponse(code = 404, message = "Product not found")})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public ResponseEntity<String> deleteProduct(@PathVariable(value = "id") int id) {
+    public ResponseEntity<Void> deleteProduct(@PathVariable(value = "id") int id) {
         int result = productCommandService.deleteProduct(id);
         if (result == 1) {
             return ResponseEntity
-                    .status(HttpStatus.NO_CONTENT)
-                    .body(null);
+                    .noContent()
+                    .build();
         } else {
             return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body("Product with given Id not found.");
+                    .notFound()
+                    .build();
         }
     }
 
@@ -95,8 +95,8 @@ public class ProductCommandController {
         int result = productCommandService.buyProducts(productsOrderDto.getOrder());
         if (result == 1) {
             return ResponseEntity
-                    .status(HttpStatus.NO_CONTENT)
-                    .body(null);
+                    .noContent()
+                    .build();
         } else {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
@@ -111,17 +111,17 @@ public class ProductCommandController {
             @ApiResponse(code = 204, message = "Product stock updated"),
             @ApiResponse(code = 400, message = "Product not found")})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public ResponseEntity<String> partialUpdateProductStock(@PathVariable(value = "id") int id,
+    public ResponseEntity<Void> partialUpdateProductStock(@PathVariable(value = "id") int id,
                                                             @Valid @RequestBody ProductStockOnlyDto productStockOnlyDto) {
         int result = productCommandService.setProductStock(id, productStockOnlyDto);
         if (result == 1) {
             return ResponseEntity
-                    .status(HttpStatus.NO_CONTENT)
-                    .body(null);
+                    .noContent()
+                    .build();
         } else {
             return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body("Product not found. Setting product stock failed.");
+                    .badRequest()
+                    .build();
         }
     }
 
@@ -132,17 +132,17 @@ public class ProductCommandController {
             @ApiResponse(code = 204, message = "Product's price updated"),
             @ApiResponse(code = 400, message = "Product not found")})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public ResponseEntity<String> changeProductPriceByPercentage(@PathVariable(value = "id") int id,
+    public ResponseEntity<Void> changeProductPriceByPercentage(@PathVariable(value = "id") int id,
                                                                  @Valid @RequestBody ProductPriceChangeDto productPriceChangeDto) {
         int result = productCommandService.changeProductPriceByPercentage(id, productPriceChangeDto);
         if (result == 1) {
             return ResponseEntity
-                    .status(HttpStatus.NO_CONTENT)
-                    .body(null);
+                    .noContent()
+                    .build();
         } else {
             return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body("Changing product price by percentage failed.");
+                    .badRequest()
+                    .build();
         }
     }
 }

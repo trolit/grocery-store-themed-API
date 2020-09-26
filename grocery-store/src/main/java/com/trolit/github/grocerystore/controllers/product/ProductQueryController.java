@@ -1,6 +1,7 @@
 package com.trolit.github.grocerystore.controllers.product;
 
 import com.trolit.github.grocerystore.dto.product.ProductQueryDto;
+import com.trolit.github.grocerystore.plugins.ApiDescription;
 import com.trolit.github.grocerystore.services.product.ProductQueryService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -25,6 +26,7 @@ public class ProductQueryController {
 
     @GetMapping
     @ApiOperation(value = "Returns products (can be filtered)")
+    @ApiDescription(value = "notes/getAllproductsDesc.md")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Returned at least one product"),
             @ApiResponse(code = 204, message = "Request successful but no products found")})
@@ -34,8 +36,8 @@ public class ProductQueryController {
         List<ProductQueryDto> products = productQueryService.getAllProducts(search);
         if (products.size() <= 0) {
             return ResponseEntity
-                    .status(HttpStatus.NO_CONTENT)
-                    .body(null);
+                    .noContent()
+                    .build();
         } else {
             return new ResponseEntity<>(products, HttpStatus.OK);
         }
@@ -51,8 +53,8 @@ public class ProductQueryController {
         ProductQueryDto product = productQueryService.getProduct(id);
         if (product == null) {
             return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body(null);
+                    .notFound()
+                    .build();
         } else {
             return new ResponseEntity<>(product, HttpStatus.OK);
         }

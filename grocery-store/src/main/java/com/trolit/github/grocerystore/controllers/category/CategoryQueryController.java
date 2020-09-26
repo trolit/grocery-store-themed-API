@@ -33,8 +33,8 @@ public class CategoryQueryController {
         List<CategoryQueryDto> categories = categoryQueryService.getAllCategories();
         if (categories.size() <= 0) {
             return ResponseEntity
-                    .status(HttpStatus.NO_CONTENT)
-                    .body(null);
+                    .noContent()
+                    .build();
         } else {
             return new ResponseEntity<>(categories, HttpStatus.OK);
         }
@@ -50,8 +50,8 @@ public class CategoryQueryController {
         CategoryQueryDto category = categoryQueryService.getCategory(id);
         if (category == null) {
             return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body(null);
+                    .notFound()
+                    .build();
         } else {
             return new ResponseEntity<>(category, HttpStatus.OK);
         }

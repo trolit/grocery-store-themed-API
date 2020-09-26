@@ -46,8 +46,8 @@ public class CategoryCommandController {
         CategoryQueryDto categoryQueryDto = categoryCommandService.updateCategory(id, categoryUpdateDto);
         if (categoryQueryDto == null) {
             return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body(null);
+                    .notFound()
+                    .build();
         } else {
             return new ResponseEntity<>(categoryQueryDto, HttpStatus.OK);
         }
@@ -59,16 +59,16 @@ public class CategoryCommandController {
             @ApiResponse(code = 204, message = "Category deleted"),
             @ApiResponse(code = 404, message = "Category not found")})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public ResponseEntity<String> deleteCategory(@PathVariable(value = "id") int id) {
+    public ResponseEntity<Void> deleteCategory(@PathVariable(value = "id") int id) {
         int result = categoryCommandService.deleteCategory(id);
         if (result == 1) {
             return ResponseEntity
-                    .status(HttpStatus.NO_CONTENT)
-                    .body(null);
+                    .noContent()
+                    .build();
         } else {
             return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body("Category with given Id not found.");
+                    .notFound()
+                    .build();
         }
     }
 }
