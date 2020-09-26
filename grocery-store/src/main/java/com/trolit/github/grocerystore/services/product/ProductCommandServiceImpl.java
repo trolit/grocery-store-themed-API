@@ -2,6 +2,7 @@ package com.trolit.github.grocerystore.services.product;
 
 import com.trolit.github.grocerystore.dto.product.*;
 import com.trolit.github.grocerystore.models.Product;
+import com.trolit.github.grocerystore.models.Category;
 import com.trolit.github.grocerystore.repositories.CategoryRepository;
 import com.trolit.github.grocerystore.repositories.ProductRepository;
 import org.modelmapper.ModelMapper;
@@ -35,7 +36,7 @@ public class ProductCommandServiceImpl implements ProductCommandService {
         boolean isCategoryPresent = categoryRepository.findById(productCreateDto.getCategoryId()).isPresent();
         if (isCategoryPresent) {
             Product product = modelMapper.map(productCreateDto, Product.class);
-            product.setCategory(categoryRepository.findById(productCreateDto.getCategoryId()).get());
+            product.setCategory(getCategoryById(productCreateDto.getCategoryId()));
             return productRepository.save(product).getId();
         } else {
             return 0;
@@ -48,7 +49,7 @@ public class ProductCommandServiceImpl implements ProductCommandService {
         if (isProductPresent(id) && isCategoryPresent) {
             Product product = modelMapper.map(productUpdateDto, Product.class);
             product.setId(id);
-            product.setCategory(categoryRepository.findById(productUpdateDto.getCategoryId()).get());
+            product.setCategory(getCategoryById(productUpdateDto.getCategoryId()));
             Product updatedProduct = productRepository.save(product);
             return modelMapper.map(updatedProduct, ProductQueryDto.class);
         } else {
@@ -118,6 +119,11 @@ public class ProductCommandServiceImpl implements ProductCommandService {
     @SuppressWarnings("OptionalGetWithoutIsPresent")
     private Product getProductById(int id) {
         return productRepository.findById(id).get();
+    }
+
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
+    private Category getCategoryById(int id) {
+        return categoryRepository.findById(id).get();
     }
 
     private int getCurrentStockValue(int productStock, int quantity) {

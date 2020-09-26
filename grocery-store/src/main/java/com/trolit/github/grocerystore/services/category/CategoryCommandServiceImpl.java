@@ -31,8 +31,7 @@ public class CategoryCommandServiceImpl implements CategoryCommandService {
 
     @Override
     public CategoryQueryDto updateCategory(int id, CategoryUpdateDto categoryUpdateDto) {
-        boolean isCategoryPresent = categoryRepository.findById(id).isPresent();
-        if (isCategoryPresent) {
+        if (isCategoryPresent(id)) {
             Category category = modelMapper.map(categoryUpdateDto, Category.class);
             category.setId(id);
             Category updatedCategory = categoryRepository.save(category);
@@ -44,12 +43,16 @@ public class CategoryCommandServiceImpl implements CategoryCommandService {
 
     @Override
     public int deleteCategory(int id) {
-        if (categoryRepository.findById(id).isPresent()) {
+        if (isCategoryPresent(id)) {
             categoryRepository.deleteById(id);
             return 1;
         } else {
             return 0;
         }
+    }
+
+    private boolean isCategoryPresent(int id) {
+        return categoryRepository.findById(id).isPresent();
     }
 
 }
