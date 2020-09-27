@@ -79,7 +79,7 @@ public class ProductCommandController {
         }
     }
 
-    @PostMapping(path = "order")
+    @PatchMapping(path = "order")
     @ApiOperation(value = "Updates given products stocks on successful order")
     @ApiResponses(value = {
             @ApiResponse(code = 204, message = "Products stocks updated"),
@@ -125,7 +125,7 @@ public class ProductCommandController {
         }
     }
 
-    @PostMapping(path = "{id}")
+    @PatchMapping(path = "{id}")
     @ApiOperation(value = "Changes product price by percentage")
     @ApiDescription(value = "notes/changeProductPriceDesc.md")
     @ApiResponses(value = {
