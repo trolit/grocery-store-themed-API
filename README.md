@@ -4,7 +4,7 @@
 <img height="100" src="https://img.shields.io/badge/--white?logo=apache%20maven&logoColor=orange&style=for-the-badge"/>
 </p>
 <h2 align="center"> Grocery Store API (v1.0)</h2>
-<p align="left">RESTFul API Maven project made in Java 14 using 2.3.4.RELEASE Spring Boot for educational purposes after <a href="https://github.com/trolit/car-themed-API" draggable="false">car themed API (.NET Core 3.1)</a>. Used technologies and tools are described below. This API can serve as well as groundwork to practise on making front-end implementation and develop functionalities like shopping cart(rendering items in it, adding buttons to change amount before clicking purchase button), making order, promotion etc. or extending it's available options. There is no payment system included. API by one of the PATCH requests serves products that user bought and reduces stock size on each of them(if purchase was successful -> if products stocks were enough to make requested order).</p>
+<p align="justify">RESTFul API Maven project made in Java 14 using 2.3.4.RELEASE Spring Boot for educational purposes after <a href="https://github.com/trolit/car-themed-API" draggable="false">car themed API (.NET Core 3.1)</a>. Used technologies and tools are described below. This API can serve as well as groundwork to practise on making front-end implementation and develop functionalities like shopping cart(rendering items in it, adding buttons to change amount before clicking purchase button), making order, promotion etc. or extending it's available options. There is no payment system included. API by one of the PATCH requests serves products that user bought and reduces stock size on each of them(if purchase was successful -> if products stocks were enough to make requested order).</p>
 
 <h3>Available actions</h3>
 
@@ -65,9 +65,10 @@ To access Swagger enter: ```http://localhost:8080/swagger-ui/``` in your browser
 <details>
     <summary>- H2 Database</summary> 
     
-Access database console by entering: ```http://localhost:8080/h2-console``` in your browser <em>(credentials are stored in application.properties)</em>. Project is using persistent Db mode. Database sample with some precreated objects is stored in the repository and will be read as soon as you launch project. If you want to have empty Db on each start you can <br/>
-- Remove line ```spring.jpa.hibernate.ddl-auto=update``` from ```application.properties```. In result on every app launch H2 will perform DROP TABLE operation. <br/><br/>
-- Overwrite line ```spring.datasource.url=jdbc:h2:file:./data/sample``` with ```jdbc:h2:mem:testdb```. This way app will use nonpersistent, "in-memory" database. 
+<p align="justify">Access database console by entering: <code>http://localhost:8080/h2-console</code> in your browser <em>(credentials are stored in application.properties)</em>. Project is using persistent Db mode. Database sample with some precreated objects is stored in the repository and will be read as soon as you launch project. If you want to have empty Db on each start you can do <strong>one</strong> of these steps: <br/><br/>
+&nbsp; 1) Remove line <code>spring.jpa.hibernate.ddl-auto=update</code> from <code>application.properties</code>. <br/> &nbsp; <em>In result on every app launch H2 will perform DROP TABLE operation.</em> <br/>
+&nbsp; 2) Overwrite line <code>spring.datasource.url=jdbc:h2:file:./data/sample</code> with <code>jdbc:h2:mem:testdb</code> <br/> &nbsp; <em>This way app will use nonpersistent, "in-memory" database.</em>
+</p>
 </details>
 
 <details>
@@ -99,8 +100,10 @@ If we wanted to additionaly shorten results with different property like price:
    
 <details>
     <summary>- Stock update PATCH requests</summary> 
-  
-Both requests change property named "stock". Request ```/products/{id}/stock``` updates stock for single product, overwriting currently stored data while the other one - ```/api/v1/products/order``` - allows to update database information when someone orders chosen product(s). To use the second method, API expects that you send in body an array with specific order: ```{ProductId}, {Amount}```. Before API makes changes to sent products stocks, it will verify if if there is enough of each product to make purchase. Example below:
+
+<p align="justify">
+Both requests change property named "stock". Request <code>/products/{id}/stock</code> updates stock for single product, overwriting currently stored data while the other one - <code>/api/v1/products/order</code> - allows to update database information when someone orders chosen product(s). To use the second method, API expects that you send in body an array with specific order: <code>{ProductId}, {Amount}</code>. Before API makes changes to sent products stocks, it will verify if if there is enough of each product to make purchase. Example below:
+</p>
 
 ```
 {
