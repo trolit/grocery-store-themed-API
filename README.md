@@ -1,8 +1,12 @@
-<h2>Grocery Store API</h2>
+<p align="center">
+<img height="100" src="https://img.shields.io/badge/--white?logo=Spring&style=for-the-badge"/>
+<img height="100" src="https://img.shields.io/badge/--white?logo=java&logoColor=orange&style=for-the-badge"/>
+<img height="100" src="https://img.shields.io/badge/--white?logo=apache%20maven&logoColor=orange&style=for-the-badge"/>
+</p>
+<h2 align="center"> Grocery Store API (v1.0)</h2>
+<p align="left">RESTFul API Maven project made in Java 14 using 2.3.4.RELEASE Spring Boot for educational purposes after <a href="https://github.com/trolit/car-themed-API" draggable="false">car themed API (.NET Core 3.1)</a>. Used technologies and tools are described below. This API can serve as well as groundwork to practise on making front-end implementation and develop functionalities like shopping cart(rendering items in it, adding buttons to change amount before clicking purchase button), making order, promotion etc. or extending it's available options. There is no payment system included. API by one of the PATCH requests serves products that user bought and reduces stock size on each of them(if purchase was successful -> if products stocks were enough to make requested order).</p>
 
-<p align="justify">RESTFul API made in Java 14 Maven project using 2.3.4 Spring Boot for educational purposes after <a href="https://github.com/trolit/car-themed-API" draggable="false">car themed API (.NET Core 3.1)</a>. This API can serve as well as groundwork to practice front-end implementation to implement something like shopping cart, order, promotion etc or extending it's functionality.</p>
-
-<h4>Available actions</h4>
+<h3>Available actions</h3>
 
 <details>
     <summary>Category Command Controller</summary> 
@@ -35,7 +39,6 @@
 | (5) | <em>Update Product's stock</em> | PATCH | ```/products/{id}/stock``` | 204 | Requested Product's stock is updated. |
 | (6) | <em>Update Products stocks</em> | PATCH | ```/products/order``` | 204 | Given products stocks are reduced by requested amount. |
 </details>
-
 <details>
     <summary>Product Query Controller</summary> 
 
@@ -45,20 +48,31 @@
 | (2) | <em>Return Product within given id</em> | GET | ```/products/{id}``` | 200 | Returns single product. |
 </details>
 
-<h4>Notes</h4>
+<h3>Notes</h3>
 
-<h5>- Swagger</h5>
+<details>
+    <summary>- Running project</summary> 
+    
+Best way to run a project without spending time on compiling it via cmd is to getting CE of JetBrains IntelliJ IDEA or any other IDE you like e.g. Eclipse and obtaining Java JDK to compile the project. 
+</details>
 
-To access it enter: ```http://localhost:8080/swagger-ui/``` in your browser <em>(pay attention to last slash)</em>
+<details>
+    <summary>- Swagger</summary> 
+    
+To access Swagger enter: ```http://localhost:8080/swagger-ui/``` in your browser <em>(pay attention to last slash)</em>
+</details>
 
-<h5>- H2 Database</h5>
-
+<details>
+    <summary>- H2 Database</summary> 
+    
 Access database console by entering: ```http://localhost:8080/h2-console``` in your browser <em>(credentials are stored in application.properties)</em>. Project is using persistent Db mode. Database sample with some precreated objects is stored in the repository and will be read as soon as you launch project. If you want to have empty Db on each start you can <br/>
 - Remove line ```spring.jpa.hibernate.ddl-auto=update``` from ```application.properties```. In result on every app launch H2 will perform DROP TABLE operation. <br/><br/>
 - Overwrite line ```spring.datasource.url=jdbc:h2:file:./data/sample``` with ```jdbc:h2:mem:testdb```. This way app will use nonpersistent, "in-memory" database. 
+</details>
 
-<h5>- Products filtering</h5>
-
+<details>
+    <summary>- Products filtering</summary> 
+    
 GET method responsible for fetching all products is extended with optional search parameter with which you can pass property name, operation and value to filter results. Every property from ProductQueryDto can be requested to be filtered. 
 
 ```java
@@ -81,9 +95,27 @@ To return products that category is "Alcoholic Drink" we would use categoryId(1)
 If we wanted to additionaly shorten results with different property like price:
 
 ```http://localhost:8080/api/v1/products?search=categoryId:1,price>15```
+</details>
+   
+<details>
+    <summary>- Stock update PATCH requests</summary> 
+  
+Both requests change property named "stock". Request ```/products/{id}/stock``` updates stock for single product, overwriting currently stored data while the other one - ```/api/v1/products/order``` - allows to update database information when someone orders chosen product(s). To use the second method, API expects that you send in body an array with specific order: ```{ProductId}, {Amount}```. Before API makes changes to sent products stocks, it will verify if if there is enough of each product to make purchase. Example below:
 
-<h4>Tools and technologies</h4>
+```
+{
+  "order": [
+    "97", "68", "102", "44"
+  ]
+}
+// 97 -> product Id
+// 68 -> amount of product identified with 97 that user ordered
+```
+</details>
 
+<details>
+    <summary>- Used tools and technologies</summary> 
+   
 - Spring Boot 2.3.4.RELEASE
 - Open JDK 14
 - Hibernate (spring-boot-starter-data-jpa)
@@ -94,9 +126,11 @@ If we wanted to additionaly shorten results with different property like price:
 - ModelMapper 2.3.8
 - Querydsl
 - IDE - IntelliJ IDEA CE 2020.1.1
+</details>
 
-<h4>Useful references</h4>
-
+<details>
+    <summary>- References that you might find useful</summary> 
+   
 - <a href="https://start.spring.io/"/>Spring Initializr</a>
 - <a href="https://howtodoinjava.com/spring-rest/spring-rest-crud-jpa-example/"/>Spring REST CRUD JPA Example</a>
 - <a href="https://www.javaguides.net/2019/08/spring-boot-crud-rest-api-spring-data-jpa-h2-database-example.html"/>Spring Boot CRUD REST API JPA H2 Example</a>
@@ -107,6 +141,7 @@ If we wanted to additionaly shorten results with different property like price:
 - <a href="https://www.baeldung.com/rest-api-search-language-spring-data-querydsl"/>Query language Spring Querydsl</a>
 - <a href="https://www.vojtechruzicka.com/documenting-spring-boot-rest-api-swagger-springfox/"/>Spring Boot documenting Swagger</a>
 - <a href="https://stackoverflow.com/questions/58998687/swagger-read-documentation-from-properties-file"/>Swagger read docs from *.md files</a>
+</details>
 
 <br/>
 
