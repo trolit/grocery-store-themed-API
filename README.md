@@ -1,8 +1,8 @@
 <h2>Grocery Store API</h2>
 
-<p align="justify">RESTFul API made in Java 14 Maven project using 2.3.4 Spring Boot for educational purposes after <a href="https://github.com/trolit/car-themed-API" draggable="false">car themed API (.NET Core 3.1)</a>. This API can serve as well as groundwork to practice front-end implementation for things like shopping cart, making order, promotion etc or extending it's functionality.</p>
+<p align="justify">RESTFul API made in Java 14 Maven project using 2.3.4 Spring Boot for educational purposes after <a href="https://github.com/trolit/car-themed-API" draggable="false">car themed API (.NET Core 3.1)</a>. This API can serve as well as groundwork to practice front-end implementation to implement something like shopping cart, order, promotion etc or extending it's functionality.</p>
 
-<h3>Tools and technologies</h3>
+<h4>Tools and technologies</h4>
 
 - Spring Boot 2.3.4.RELEASE
 - Open JDK 14
@@ -13,32 +13,37 @@
 - Springfox Swagger 3.0.0
 - ModelMapper 2.3.8
 - Querydsl
-- IDE - IntelliJ IDEA
+- IDE - IntelliJ IDEA CE 2020.1.1
 
 <br/>
 
 <h3>Available actions</h3>
 
-<h4>Category Command Controller</h4>
+<details>
+    <summary>Category Command Controller</summary> 
 
 | Sr. No. | Operation <img width=350/> | HTTP Method | Path <br/> ```/api/v1``` <img width=200/> | Status Code | Description <img width=200/> |
 | :---: | :---: | :---: | :---: | :---: | :---: |
 | (1) | <em>Create Category</em> | POST | ```/categories``` | 201 | New Category is created. |
 | (2) | <em>Update Category</em> | PUT | ```/categories/{id}``` | 200 | Category resource is updated. |
 | (3) | <em>Delete Category</em> | DELETE | ```/categories/{id}``` | 204 | Category is deleted. |
+</details>
 
 <br/>
 
-<h4>Category Query Controller</h4>
+<details>
+    <summary>Category Query Controller</summary> 
 
 | Sr. No. | Operation <img width=350/> | HTTP Method | Path <br/> ```/api/v1``` <img width=200/> | Status Code | Description <img width=200/> |
 | :---: | :---: | :---: | :---: | :---: | :---: |
 | (1) | <em>Return Categories</em> | GET | ```/categories``` | 200 | Fetches all categories. |
 | (2) | <em>Return Category</em> | GET | ```/categories/{id}``` | 200 | One category is fetched. |
+</details>
 
 <br/>
 
-<h4>Product Command Controller</h4>
+<details>
+    <summary>Product Command Controller</summary> 
 
 | Sr. No. | Operation <img width=350/> | HTTP Method | Path <br/> ```/api/v1``` <img width=200/> | Status Code | Description <img width=200/> |
 | :---: | :---: | :---: | :---: | :---: | :---: |
@@ -48,15 +53,18 @@
 | (4) | <em>Change Product's price by percentage</em> | PATCH | ```/products/{id}/price``` | 204 | Product price is updated according to given percentage. |
 | (5) | <em>Update Product's stock</em> | PATCH | ```/products/{id}/stock``` | 204 | Requested Product's stock is updated. |
 | (6) | <em>Update Products stocks</em> | PATCH | ```/products/order``` | 204 | Given products stocks are reduced by requested amount. |
+</details>
 
 <br/>
 
-<h4>Product Query Controller</h4>
+<details>
+    <summary>Product Query Controller</summary> 
 
 | Sr. No. | Operation <img width=350/> | HTTP Method | Path <br/> ```/api/v1``` <img width=200/> | Status Code | Description <img width=200/> |
 | :---: | :---: | :---: | :---: | :---: | :---: |
 | (1) | <em>Return Products (can be filtered)</em> | GET | ```/products``` | 200 | Fetches all products. |
 | (2) | <em>Return Product within given id</em> | GET | ```/products/{id}``` | 200 | Returns single product. |
+</details>
 
 <br/>
 
@@ -68,7 +76,7 @@ To access it enter: ```http://localhost:8080/swagger-ui/``` in your browser <em>
 
 <h4>H2 Database</h4>
 
-Access database console by entering: ```http://localhost:8080/h2-console``` in your browser <em>(credentials are stored in application.properties)</em>. Project is using persistent Db mode. Database sample is stored in the repository and will be read as soon as you launch project with some precreated objects. If you want to have empty Db on each start you can <br/>
+Access database console by entering: ```http://localhost:8080/h2-console``` in your browser <em>(credentials are stored in application.properties)</em>. Project is using persistent Db mode. Database sample with some precreated objects is stored in the repository and will be read as soon as you launch project. If you want to have empty Db on each start you can <br/>
 - Remove line ```spring.jpa.hibernate.ddl-auto=update``` from ```application.properties```. In result on every app launch H2 will perform DROP TABLE operation. <br/><br/>
 - Overwrite line ```spring.datasource.url=jdbc:h2:file:./data/sample``` with ```jdbc:h2:mem:testdb```. This way app will use nonpersistent, "in-memory" database. 
 
@@ -86,6 +94,7 @@ public class ProductQueryDto {
     private Integer categoryId;
     private String measurement;
     // getters and setters skipped for brievity
+}
 ```
 
 To return products that category is "Alcoholic Drink" we would use categoryId(1) because of existing whitespace bug. URL would look something like this:
