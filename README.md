@@ -29,8 +29,6 @@
 | (3) | <em>Delete Category</em> | DELETE | ```/categories/{id}``` | 204 | Category is deleted. |
 </details>
 
-<br/>
-
 <details>
     <summary>Category Query Controller</summary> 
 
@@ -39,8 +37,6 @@
 | (1) | <em>Return Categories</em> | GET | ```/categories``` | 200 | Fetches all categories. |
 | (2) | <em>Return Category</em> | GET | ```/categories/{id}``` | 200 | One category is fetched. |
 </details>
-
-<br/>
 
 <details>
     <summary>Product Command Controller</summary> 
@@ -54,8 +50,6 @@
 | (5) | <em>Update Product's stock</em> | PATCH | ```/products/{id}/stock``` | 204 | Requested Product's stock is updated. |
 | (6) | <em>Update Products stocks</em> | PATCH | ```/products/order``` | 204 | Given products stocks are reduced by requested amount. |
 </details>
-
-<br/>
 
 <details>
     <summary>Product Query Controller</summary> 
