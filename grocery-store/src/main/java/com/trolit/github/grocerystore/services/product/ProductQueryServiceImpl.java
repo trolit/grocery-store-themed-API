@@ -46,7 +46,7 @@ public class ProductQueryServiceImpl implements  ProductQueryService {
         String categoryName = "";
         if (search != null) {
             ProductPredicatesBuilder builder = new ProductPredicatesBuilder();
-            Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?),");
+            Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?|\\w+?%20\\w+?),");
             Matcher matcher = pattern.matcher(search + ",");
             while (matcher.find()) {
                 String key = matcher.group(1);
@@ -55,7 +55,7 @@ public class ProductQueryServiceImpl implements  ProductQueryService {
                 if (key.equals("categoryId")) {
                     categoryId = Integer.parseInt(value);
                 } else if (key.equals("category")) {
-                    categoryName = value;
+                    categoryName = ConvertWhiteSpaceEncoding(value);
                 } else {
                     builder.with(key, operation, value);
                 }
@@ -77,6 +77,9 @@ public class ProductQueryServiceImpl implements  ProductQueryService {
         return productsList;
     }
 
+    private String ConvertWhiteSpaceEncoding(String value) {
+        return value.replace("%20", " ");
+    }
 
     private BooleanExpression ReturnExpressionWithCategoryParams(ProductPredicatesBuilder builder,
                                                                  BooleanExpression productExp,
