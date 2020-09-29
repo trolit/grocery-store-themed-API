@@ -3,7 +3,7 @@
 <img height="100" src="https://img.shields.io/badge/--white?logo=java&logoColor=orange&style=for-the-badge"/>
 <img height="100" src="https://img.shields.io/badge/--white?logo=apache%20maven&logoColor=orange&style=for-the-badge"/>
 </p>
-<h2 align="center"> Grocery Store API (v1.0)</h2>
+<h2 align="center"> Grocery Store API (v1.0.1)</h2>
 <p align="justify">RESTFul API Maven project made in Java 14 using 2.3.4.RELEASE Spring Boot for educational purposes after <a href="https://github.com/trolit/car-themed-API" draggable="false">car themed API (.NET Core 3.1)</a>. Used technologies and tools are described below. This API can serve as well as groundwork to practise on making front-end implementation and develop functionalities like shopping cart(rendering items in it, adding buttons to change amount before clicking purchase button), making order, promotion etc. or extending it's available options. There is no payment system included. API by one of the PATCH requests serves products that user bought and reduces stock size on each of them(if purchase was successful -> if products stocks were enough to make requested order).</p>
 
 <h3>Available actions</h3>
@@ -89,9 +89,11 @@ public class ProductQueryDto {
 }
 ```
 
-To return products that category is "Alcoholic Drink" we would use categoryId(1) because of existing whitespace bug. URL would look something like this:
+To return products that category is "Alcoholic Drinks" we could use it's identity from categoryId property or human readable name but in that case whitespace must be replaced with %20 encoding. Examples below.
 
 ```http://localhost:8080/api/v1/products?search=categoryId:1```
+
+```http://localhost:8080/api/v1/products?search=category:Alcoholic%20Drinks```
 
 If we wanted to additionaly shorten results with different property like price:
 
@@ -144,6 +146,7 @@ Both requests change property named "stock". Request <code>/products/{id}/stock<
 - <a href="https://www.baeldung.com/rest-api-search-language-spring-data-querydsl"/>Query language Spring Querydsl</a>
 - <a href="https://www.vojtechruzicka.com/documenting-spring-boot-rest-api-swagger-springfox/"/>Spring Boot documenting Swagger</a>
 - <a href="https://stackoverflow.com/questions/58998687/swagger-read-documentation-from-properties-file"/>Swagger read docs from *.md files</a>
+- <a href="https://regex101.com/">Online regular expressions tester</a>
 </details>
 
 <br/>
