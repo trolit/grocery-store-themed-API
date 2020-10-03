@@ -2,6 +2,7 @@ package com.trolit.github.grocerystore.services.product;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.trolit.github.grocerystore.dto.product.ProductQueryDto;
+import com.trolit.github.grocerystore.enums.PriceStatusEnum;
 import com.trolit.github.grocerystore.models.Product;
 import com.trolit.github.grocerystore.models.QProduct;
 import com.trolit.github.grocerystore.predicates.ProductPredicatesBuilder;
@@ -52,6 +53,7 @@ public class ProductQueryServiceImpl implements ProductQueryService {
         Iterable<Product> result;
         int categoryId = 0;
         String categoryName = "";
+        String priceStatus = "";
         if (search != null) {
             // percentagePriceDiff key is NA
             if (search.contains("percentagePriceDiff")) {
@@ -64,21 +66,19 @@ public class ProductQueryServiceImpl implements ProductQueryService {
                 String key = matcher.group(1);
                 String operation = matcher.group(2);
                 String value = matcher.group(3);
-                if (key.equals("categoryId")) {
-                    categoryId = Integer.parseInt(value);
-                } else if (key.equals("category")) {
-                    categoryName = convertWhiteSpaceEncoding(value);
-                } else {
-                    builder.with(key, operation, value);
+                switch (key) {
+                    case "categoryId" -> categoryId = Integer.parseInt(value);
+                    case "category" -> categoryName = convertWhiteSpaceEncoding(value);
+                    case "priceStatus" -> priceStatus = value;
+                    default -> builder.with(key, operation, value);
                 }
             }
-            BooleanExpression productExp = builder.build();
-            if ((categoryId > 0 || !categoryName.isEmpty())) {
+            BooleanExpression productExpression = builder.build();
+            if (categoryId > 0 || !categoryName.isEmpty() || !priceStatus.isEmpty()) {
                 result = productRepository.findAll(
-                        returnExpressionWithCategoryParams
-                                (builder, productExp, categoryId, categoryName));
+                        getExtendedExpression(builder, productExpression, categoryId, categoryName, priceStatus));
             } else {
-                result = productRepository.findAll(productExp);
+                result = productRepository.findAll(productExpression);
             }
         } else {
             result = productRepository.findAll();
@@ -103,21 +103,54 @@ public class ProductQueryServiceImpl implements ProductQueryService {
         return value.replace("%20", " ");
     }
 
-    private BooleanExpression returnExpressionWithCategoryParams(ProductPredicatesBuilder builder,
-                                                                 BooleanExpression productExp,
-                                                                 Integer categoryId,
-                                                                 String categoryName)
-    {
-        BooleanExpression categoryExpression = retrieveCategoryExpression(categoryId, categoryName);
+    private BooleanExpression getExtendedExpression(ProductPredicatesBuilder builder,
+                                                    BooleanExpression productExpression,
+                                                    Integer categoryId,
+                                                    String categoryName,
+                                                    String priceStatus) {
+        BooleanExpression categoryExpression = null;
+        BooleanExpression priceStatusExpression = null;
+
+        if (categoryId > 0 || !categoryName.isEmpty()) {
+            categoryExpression = getCategoryExpression(categoryId, categoryName);
+        }
+
+        if (!priceStatus.isEmpty()) {
+            priceStatusExpression = getPriceStatusExpression(priceStatus);
+        }
+
         if (builder.getParamsSize() > 0) {
-            return productExp.and(categoryExpression);
+            if (categoryExpression == null && priceStatusExpression != null) {
+                return productExpression.and(priceStatusExpression);
+            } else if (priceStatusExpression == null && categoryExpression != null) {
+                return productExpression.and(categoryExpression);
+            } else {
+                return productExpression.and(priceStatusExpression).and(categoryExpression);
+            }
         } else {
-            return categoryExpression;
+            if (categoryExpression == null && priceStatusExpression != null) {
+                return priceStatusExpression;
+            } else if (priceStatusExpression == null && categoryExpression != null) {
+                return categoryExpression;
+            } else {
+                return priceStatusExpression.and(categoryExpression);
+            }
         }
     }
 
-    private BooleanExpression retrieveCategoryExpression(Integer categoryId,
-                                                         String categoryName) {
+    private BooleanExpression getPriceStatusExpression(String priceStatus){
+        QProduct product = QProduct.product;
+        if (priceStatus.equals(PriceStatusEnum.rise.toString())) {
+            return product.price.goe(product.previousPrice);
+        } else if (priceStatus.equals(PriceStatusEnum.discount.toString())) {
+            return product.price.loe(product.previousPrice);
+        } else {
+            return product.price.eq(product.previousPrice);
+        }
+    }
+
+    private BooleanExpression getCategoryExpression(Integer categoryId,
+                                                    String categoryName) {
         if (categoryId > 0 && categoryName.isEmpty()) {
             return categoryIdExpression(categoryId);
         } else if (categoryId == 0 && !categoryName.isEmpty()) {
