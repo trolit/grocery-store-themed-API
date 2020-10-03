@@ -2,7 +2,6 @@ package com.trolit.github.grocerystore.services.product;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.trolit.github.grocerystore.dto.product.ProductQueryDto;
-import com.trolit.github.grocerystore.enums.PriceStatusEnum;
 import com.trolit.github.grocerystore.models.Product;
 import com.trolit.github.grocerystore.models.QProduct;
 import com.trolit.github.grocerystore.predicates.ProductPredicatesBuilder;
@@ -53,7 +52,6 @@ public class ProductQueryServiceImpl implements ProductQueryService {
         Iterable<Product> result;
         int categoryId = 0;
         String categoryName = "";
-        String priceStatus = "";
         if (search != null) {
             // percentagePriceDiff key is NA
             if (search.contains("percentagePriceDiff")) {
@@ -69,14 +67,13 @@ public class ProductQueryServiceImpl implements ProductQueryService {
                 switch (key) {
                     case "categoryId" -> categoryId = Integer.parseInt(value);
                     case "category" -> categoryName = convertWhiteSpaceEncoding(value);
-                    case "priceStatus" -> priceStatus = value;
                     default -> builder.with(key, operation, value);
                 }
             }
             BooleanExpression productExpression = builder.build();
-            if (categoryId > 0 || !categoryName.isEmpty() || !priceStatus.isEmpty()) {
+            if (categoryId > 0 || !categoryName.isEmpty()) {
                 result = productRepository.findAll(
-                        getExtendedExpression(builder, productExpression, categoryId, categoryName, priceStatus));
+                        getExtendedExpression(builder, productExpression, categoryId, categoryName));
             } else {
                 result = productRepository.findAll(productExpression);
             }
@@ -106,46 +103,13 @@ public class ProductQueryServiceImpl implements ProductQueryService {
     private BooleanExpression getExtendedExpression(ProductPredicatesBuilder builder,
                                                     BooleanExpression productExpression,
                                                     Integer categoryId,
-                                                    String categoryName,
-                                                    String priceStatus) {
-        BooleanExpression categoryExpression = null;
-        BooleanExpression priceStatusExpression = null;
-
-        if (categoryId > 0 || !categoryName.isEmpty()) {
-            categoryExpression = getCategoryExpression(categoryId, categoryName);
-        }
-
-        if (!priceStatus.isEmpty()) {
-            priceStatusExpression = getPriceStatusExpression(priceStatus);
-        }
+                                                    String categoryName) {
+        BooleanExpression categoryExpression = getCategoryExpression(categoryId, categoryName);
 
         if (builder.getParamsSize() > 0) {
-            if (categoryExpression == null && priceStatusExpression != null) {
-                return productExpression.and(priceStatusExpression);
-            } else if (priceStatusExpression == null && categoryExpression != null) {
-                return productExpression.and(categoryExpression);
-            } else {
-                return productExpression.and(priceStatusExpression).and(categoryExpression);
-            }
+            return productExpression.and(categoryExpression);
         } else {
-            if (categoryExpression == null && priceStatusExpression != null) {
-                return priceStatusExpression;
-            } else if (priceStatusExpression == null && categoryExpression != null) {
-                return categoryExpression;
-            } else {
-                return priceStatusExpression.and(categoryExpression);
-            }
-        }
-    }
-
-    private BooleanExpression getPriceStatusExpression(String priceStatus){
-        QProduct product = QProduct.product;
-        if (priceStatus.equals(PriceStatusEnum.rise.toString())) {
-            return product.price.goe(product.previousPrice);
-        } else if (priceStatus.equals(PriceStatusEnum.discount.toString())) {
-            return product.price.loe(product.previousPrice);
-        } else {
-            return product.price.eq(product.previousPrice);
+            return categoryExpression;
         }
     }
 

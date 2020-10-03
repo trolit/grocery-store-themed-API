@@ -5,7 +5,9 @@ import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.core.types.dsl.StringPath;
 import com.trolit.github.grocerystore.SearchCriteria;
+import com.trolit.github.grocerystore.enums.PriceStatusEnum;
 import com.trolit.github.grocerystore.models.Product;
+import com.trolit.github.grocerystore.models.QProduct;
 
 public class ProductPredicate {
 
@@ -37,6 +39,17 @@ public class ProductPredicate {
             }
         }
         return null;
+    }
+
+    public BooleanExpression getPriceStatusPredicate(){
+        QProduct product = QProduct.product;
+        if (criteria.getValue().equals(PriceStatusEnum.rise.toString())) {
+            return product.price.goe(product.previousPrice);
+        } else if (criteria.getValue().equals(PriceStatusEnum.discount.toString())) {
+            return product.price.loe(product.previousPrice);
+        } else {
+            return product.price.eq(product.previousPrice);
+        }
     }
 
     public SearchCriteria getCriteria() {

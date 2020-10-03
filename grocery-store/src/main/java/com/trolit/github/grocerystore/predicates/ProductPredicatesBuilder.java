@@ -31,7 +31,11 @@ public class ProductPredicatesBuilder {
 
         final List<BooleanExpression> predicates = params.stream().map(param -> {
             ProductPredicate predicate = new ProductPredicate(param);
-            return predicate.getPredicate();
+            if (param.getKey().equals("priceStatus")) {
+                return predicate.getPriceStatusPredicate();
+            } else {
+                return predicate.getPredicate();
+            }
         }).filter(Objects::nonNull).collect(Collectors.toList());
 
         BooleanExpression result = Expressions.asBoolean(true).isTrue();
