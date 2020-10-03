@@ -51,6 +51,10 @@ public class ProductQueryServiceImpl implements ProductQueryService {
         int categoryId = 0;
         String categoryName = "";
         if (search != null) {
+            // percentagePriceDiff key is NA
+            if (search.contains("percentagePriceDiff")) {
+                return productsList;
+            }
             ProductPredicatesBuilder builder = new ProductPredicatesBuilder();
             Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?|\\w+?%20\\w+?),");
             Matcher matcher = pattern.matcher(search + ",");
