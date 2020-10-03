@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class CategoryQueryServiceImpl implements  CategoryQueryService {
+public class CategoryQueryServiceImpl implements CategoryQueryService {
 
     private final CategoryRepository categoryRepository;
     private final ModelMapper modelMapper;

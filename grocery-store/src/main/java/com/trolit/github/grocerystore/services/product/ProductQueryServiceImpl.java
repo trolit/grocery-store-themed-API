@@ -16,7 +16,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
-public class ProductQueryServiceImpl implements  ProductQueryService {
+public class ProductQueryServiceImpl implements ProductQueryService {
 
     private final ProductRepository productRepository;
     private final ModelMapper modelMapper;

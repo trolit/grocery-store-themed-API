@@ -47,7 +47,11 @@ public class ProductCommandServiceImpl implements ProductCommandService {
     public ProductQueryDto updateProduct(int id, ProductUpdateDto productUpdateDto) {
         boolean isCategoryPresent = categoryRepository.findById(productUpdateDto.getCategoryId()).isPresent();
         if (isProductPresent(id) && isCategoryPresent) {
+            BigDecimal currentPrice = getCurrentPrice(id);
             Product product = modelMapper.map(productUpdateDto, Product.class);
+            if (!productUpdateDto.getPrice().equals(currentPrice)) {
+                product.setPreviousPrice(currentPrice);
+            }
             product.setId(id);
             product.setCategory(getCategoryById(productUpdateDto.getCategoryId()));
             Product updatedProduct = productRepository.save(product);
@@ -104,12 +108,18 @@ public class ProductCommandServiceImpl implements ProductCommandService {
             BigDecimal newPrice = product.getPrice()
                     .multiply(new BigDecimal(productPriceChangeDto.getPercentage()))
                     .divide(new BigDecimal(100), 2, RoundingMode.HALF_UP);
+            product.setPreviousPrice(getCurrentPrice(id));
             product.setPrice(newPrice);
             productRepository.save(product);
             return 1;
         } else {
             return 0;
         }
+    }
+
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
+    private BigDecimal getCurrentPrice(int id) {
+        return productRepository.findById(id).get().getPrice();
     }
 
     private boolean isProductPresent(int id) {
