@@ -14,6 +14,10 @@ public class Product {
     @Column(nullable = false)
     private String name;
 
+    // 4 - integer, 2 - fraction
+    @Column(columnDefinition="Decimal(4,2) default '0.00'")
+    private BigDecimal previousPrice;
+
     @Column(nullable = false)
     private BigDecimal price;
 
@@ -43,6 +47,14 @@ public class Product {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public BigDecimal getPreviousPrice() {
+        return previousPrice;
+    }
+
+    public void setPreviousPrice(BigDecimal previousPrice) {
+        this.previousPrice = previousPrice;
     }
 
     public BigDecimal getPrice() {
