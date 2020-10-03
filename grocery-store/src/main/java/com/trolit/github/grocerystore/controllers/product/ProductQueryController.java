@@ -29,10 +29,17 @@ public class ProductQueryController {
     @ApiDescription(value = "notes/getAllproductsDesc.md")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Returned at least one product"),
-            @ApiResponse(code = 204, message = "Request successful but no products found")})
+            @ApiResponse(code = 204, message = "Request successful but no products found"),
+            @ApiResponse(code = 400, message = "Filter percentagePriceDiff is not available")})
     @ResponseStatus(value = HttpStatus.OK)
     public ResponseEntity<List<ProductQueryDto>> getAllProducts(
             @RequestParam(value = "search", required = false) String search) {
+        if (search.contains("percentagePriceDiff")) {
+            return ResponseEntity
+                    .badRequest()
+                    .build();
+        }
+
         List<ProductQueryDto> products = productQueryService.getAllProducts(search);
         if (products.size() <= 0) {
             return ResponseEntity
