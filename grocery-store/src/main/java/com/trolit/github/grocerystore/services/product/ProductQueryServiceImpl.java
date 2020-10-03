@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.trolit.github.grocerystore.services.product.ProductCommonMethods.returnPercentageDiffBetweenPrices;
+
 @Service
 public class ProductQueryServiceImpl implements ProductQueryService {
 
@@ -32,7 +34,10 @@ public class ProductQueryServiceImpl implements ProductQueryService {
     public ProductQueryDto getProduct(int id) {
         if(productRepository.findById(id).isPresent()) {
             Product product = productRepository.findById(id).get();
-            return modelMapper.map(product, ProductQueryDto.class);
+            ProductQueryDto productQueryDto = modelMapper.map(product, ProductQueryDto.class);
+            productQueryDto.setPercentagePriceDiff(
+                    returnPercentageDiffBetweenPrices(product.getPrice(), product.getPreviousPrice()));
+            return productQueryDto;
         } else {
             return null;
         }
@@ -55,7 +60,7 @@ public class ProductQueryServiceImpl implements ProductQueryService {
                 if (key.equals("categoryId")) {
                     categoryId = Integer.parseInt(value);
                 } else if (key.equals("category")) {
-                    categoryName = ConvertWhiteSpaceEncoding(value);
+                    categoryName = convertWhiteSpaceEncoding(value);
                 } else {
                     builder.with(key, operation, value);
                 }
@@ -63,7 +68,7 @@ public class ProductQueryServiceImpl implements ProductQueryService {
             BooleanExpression productExp = builder.build();
             if ((categoryId > 0 || !categoryName.isEmpty())) {
                 result = productRepository.findAll(
-                        ReturnExpressionWithCategoryParams
+                        returnExpressionWithCategoryParams
                                 (builder, productExp, categoryId, categoryName));
             } else {
                 result = productRepository.findAll(productExp);
@@ -72,16 +77,24 @@ public class ProductQueryServiceImpl implements ProductQueryService {
             result = productRepository.findAll();
         }
         for (Product product: result) {
-            productsList.add(modelMapper.map(product, ProductQueryDto.class));
+            ProductQueryDto productQueryDto = modelMapper.map(product, ProductQueryDto.class);
+            if (product.getPreviousPrice().signum() > 0) {
+                int percentageDiff =
+                        returnPercentageDiffBetweenPrices(product.getPrice(), product.getPreviousPrice());
+                productQueryDto.setPercentagePriceDiff(percentageDiff);
+            } else {
+                productQueryDto.setPercentagePriceDiff(0);
+            }
+            productsList.add(productQueryDto);
         }
         return productsList;
     }
 
-    private String ConvertWhiteSpaceEncoding(String value) {
+    private String convertWhiteSpaceEncoding(String value) {
         return value.replace("%20", " ");
     }
 
-    private BooleanExpression ReturnExpressionWithCategoryParams(ProductPredicatesBuilder builder,
+    private BooleanExpression returnExpressionWithCategoryParams(ProductPredicatesBuilder builder,
                                                                  BooleanExpression productExp,
                                                                  Integer categoryId,
                                                                  String categoryName)

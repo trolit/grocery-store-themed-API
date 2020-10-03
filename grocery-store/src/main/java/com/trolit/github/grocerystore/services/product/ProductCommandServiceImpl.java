@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
 
+import static com.trolit.github.grocerystore.services.product.ProductCommonMethods.returnPercentageDiffBetweenPrices;
 import static java.lang.Integer.parseInt;
 
 @Service
@@ -48,14 +49,17 @@ public class ProductCommandServiceImpl implements ProductCommandService {
         boolean isCategoryPresent = categoryRepository.findById(productUpdateDto.getCategoryId()).isPresent();
         if (isProductPresent(id) && isCategoryPresent) {
             BigDecimal currentPrice = getCurrentPrice(id);
+            BigDecimal newPrice = productUpdateDto.getPrice();
             Product product = modelMapper.map(productUpdateDto, Product.class);
-            if (!productUpdateDto.getPrice().equals(currentPrice)) {
-                product.setPreviousPrice(currentPrice);
+            if (!newPrice.equals(currentPrice)) {
+                product.setPreviousPrice(currentPrice == null ? new BigDecimal(0) : currentPrice);
             }
             product.setId(id);
             product.setCategory(getCategoryById(productUpdateDto.getCategoryId()));
             Product updatedProduct = productRepository.save(product);
-            return modelMapper.map(updatedProduct, ProductQueryDto.class);
+            ProductQueryDto productQueryDto = modelMapper.map(updatedProduct, ProductQueryDto.class);
+            productQueryDto.setPercentagePriceDiff(returnPercentageDiffBetweenPrices(newPrice, currentPrice));
+            return productQueryDto;
         } else {
             return null;
         }
