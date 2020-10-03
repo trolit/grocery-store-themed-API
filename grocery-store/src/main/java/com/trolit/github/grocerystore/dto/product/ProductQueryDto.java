@@ -22,6 +22,8 @@ public class ProductQueryDto {
 
     private Integer percentagePriceDiff;
 
+    private String priceStatus;
+
     // getters and setters
 
     public Integer getId() {
@@ -94,5 +96,13 @@ public class ProductQueryDto {
 
     public void setPercentagePriceDiff(Integer percentagePriceDiff) {
         this.percentagePriceDiff = percentagePriceDiff;
+    }
+
+    public String getPriceStatus() {
+        return priceStatus;
+    }
+
+    public void setPriceStatus(String priceStatus) {
+        this.priceStatus = priceStatus;
     }
 }

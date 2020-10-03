@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.trolit.github.grocerystore.services.product.ProductCommonMethods.getPriceStatus;
 import static com.trolit.github.grocerystore.services.product.ProductCommonMethods.returnPercentageDiffBetweenPrices;
 
 @Service
@@ -38,6 +39,7 @@ public class ProductQueryServiceImpl implements ProductQueryService {
             ProductQueryDto productQueryDto = modelMapper.map(product, ProductQueryDto.class);
             productQueryDto.setPercentagePriceDiff(
                     returnPercentageDiffBetweenPrices(product.getPrice(), product.getPreviousPrice()));
+            productQueryDto.setPriceStatus(getPriceStatus(product.getPrice(), product.getPreviousPrice()));
             return productQueryDto;
         } else {
             return null;
@@ -91,6 +93,7 @@ public class ProductQueryServiceImpl implements ProductQueryService {
             } else {
                 productQueryDto.setPercentagePriceDiff(0);
             }
+            productQueryDto.setPriceStatus(getPriceStatus(product.getPrice(), previousPrice));
             productsList.add(productQueryDto);
         }
         return productsList;

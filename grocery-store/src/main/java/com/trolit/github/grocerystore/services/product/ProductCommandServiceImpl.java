@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
 
+import static com.trolit.github.grocerystore.services.product.ProductCommonMethods.getPriceStatus;
 import static com.trolit.github.grocerystore.services.product.ProductCommonMethods.returnPercentageDiffBetweenPrices;
 import static java.lang.Integer.parseInt;
 
@@ -59,6 +60,7 @@ public class ProductCommandServiceImpl implements ProductCommandService {
             Product updatedProduct = productRepository.save(product);
             ProductQueryDto productQueryDto = modelMapper.map(updatedProduct, ProductQueryDto.class);
             productQueryDto.setPercentagePriceDiff(returnPercentageDiffBetweenPrices(newPrice, currentPrice));
+            productQueryDto.setPriceStatus(getPriceStatus(newPrice, currentPrice));
             return productQueryDto;
         } else {
             return null;
