@@ -18,6 +18,10 @@ public class ProductQueryDto {
 
     private String measurement;
 
+    private BigDecimal previousPrice;
+
+    private Integer percentagePriceDiff;
+
     // getters and setters
 
     public Integer getId() {
@@ -76,4 +80,19 @@ public class ProductQueryDto {
         this.measurement = measurement;
     }
 
+    public BigDecimal getPreviousPrice() {
+        return previousPrice;
+    }
+
+    public void setPreviousPrice(BigDecimal previousPrice) {
+        this.previousPrice = previousPrice;
+    }
+
+    public Integer getPercentagePriceDiff() {
+        return percentagePriceDiff;
+    }
+
+    public void setPercentagePriceDiff(Integer percentagePriceDiff) {
+        this.percentagePriceDiff = percentagePriceDiff;
+    }
 }
