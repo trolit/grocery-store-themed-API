@@ -52,7 +52,7 @@ public class ProductCommandServiceImpl implements ProductCommandService {
             BigDecimal newPrice = productUpdateDto.getPrice();
             Product product = modelMapper.map(productUpdateDto, Product.class);
             if (!newPrice.equals(currentPrice)) {
-                product.setPreviousPrice(currentPrice == null ? new BigDecimal(0) : currentPrice);
+                product.setPreviousPrice(currentPrice);
             }
             product.setId(id);
             product.setCategory(getCategoryById(productUpdateDto.getCategoryId()));
