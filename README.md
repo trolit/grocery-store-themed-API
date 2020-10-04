@@ -34,7 +34,7 @@ To access Swagger enter: ```http://localhost:8080/swagger-ui/``` in your browser
 <details>
     <summary>- Filtering products</summary> 
     
-Except percentagePriceDiffEvery, every property from ProductQueryDto showed below can be requested to be filtered in <code>key{operation}value</code> scheme. Available operations are: :(equal), >(greater or equal), <(less or equal).
+Except percentagePriceDiff, every property from ProductQueryDto showed below can be requested to be filtered in <code>key{operation}value</code> scheme. Available operations are: :(equal), >(greater or equal), <(less or equal).
 
 ```java
 public class ProductQueryDto {
