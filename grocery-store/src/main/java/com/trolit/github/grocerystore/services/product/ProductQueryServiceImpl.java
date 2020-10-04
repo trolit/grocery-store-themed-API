@@ -60,17 +60,23 @@ public class ProductQueryServiceImpl implements ProductQueryService {
         for (Product product: result) {
             ProductQueryDto productQueryDto = modelMapper.map(product, ProductQueryDto.class);
             BigDecimal previousPrice = product.getPreviousPrice();
-            if (previousPrice != null && previousPrice.signum() > 0) {
-                int percentageDiff =
-                        returnPercentageDiffBetweenPrices(product.getPrice(), product.getPreviousPrice());
-                productQueryDto.setPercentagePriceDiff(percentageDiff);
-            } else {
-                productQueryDto.setPercentagePriceDiff(0);
-            }
+            setProductQueryDtoPercentageDiff(productQueryDto, product.getPrice(), previousPrice);
             productQueryDto.setPriceStatus(getPriceStatus(product.getPrice(), previousPrice));
             productsList.add(productQueryDto);
         }
         return productsList;
+    }
+
+    private void setProductQueryDtoPercentageDiff(ProductQueryDto productQueryDto,
+                                                  BigDecimal currentPrice,
+                                                  BigDecimal previousPrice) {
+        if (previousPrice != null && previousPrice.signum() > 0) {
+            int percentageDiff =
+                    returnPercentageDiffBetweenPrices(currentPrice, previousPrice);
+            productQueryDto.setPercentagePriceDiff(percentageDiff);
+        } else {
+            productQueryDto.setPercentagePriceDiff(0);
+        }
     }
 
     private void addParamsToPredicatesBuilder(ProductPredicatesBuilder productPredicatesBuilder,
