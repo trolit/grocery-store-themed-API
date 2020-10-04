@@ -41,7 +41,7 @@ public class ProductPredicate {
         return null;
     }
 
-    public BooleanExpression getPriceStatusPredicate(){
+    public BooleanExpression getPriceStatusPredicate() {
         QProduct product = QProduct.product;
         if (criteria.getValue().equals(PriceStatusEnum.rise.toString())) {
             return product.price.goe(product.previousPrice);
@@ -50,6 +50,22 @@ public class ProductPredicate {
         } else {
             return product.price.eq(product.previousPrice);
         }
+    }
+
+    public BooleanExpression getCategoryNamePredicate() {
+        QProduct product = QProduct.product;
+        String categoryName = convertWhiteSpaceEncoding(criteria.getValue().toString());
+        return product.category.name.eq(categoryName);
+    }
+
+    private String convertWhiteSpaceEncoding(String value) {
+        return value.replace("%20", " ");
+    }
+
+    public BooleanExpression getCategoryIdPredicate() {
+        QProduct product = QProduct.product;
+        Integer categoryId = Integer.parseInt(criteria.getValue().toString());
+        return product.category.id.eq(categoryId);
     }
 
     public SearchCriteria getCriteria() {
