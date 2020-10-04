@@ -4,35 +4,37 @@
 <img height="100" src="https://img.shields.io/badge/--white?logo=apache%20maven&logoColor=orange&style=for-the-badge"/>
 </p>
 <h2 align="center"> Grocery Store API (v1.1.1)</h2>
-<p align="justify">RESTFul API Maven project made in Java 14 and 2.3.4.RELEASE Spring Boot after <a href="https://github.com/trolit/car-themed-API" draggable="false">car themed API (.NET Core 3.1)</a>. This API can serve as groundwork to practise front-end implementation and develop functionalities like products filtering, shopping cart(rendering items in it, adding buttons to change amount), making purchase, decorating products that are on promotion etc. There is no payment system included. API by one of the PATCH requests serves products that user bought and reduces stock size on each of them(provided that purchase was successful meaning if ordered products stocks were enough to make requested order).</p>
+<p align="justify">RESTFul API Maven project made in Java 14 and 2.3.4.RELEASE Spring Boot after <a href="https://github.com/trolit/car-themed-API" draggable="false">car themed API (.NET Core 3.1)</a>. This API can serve for e.g. as groundwork to practise front-end implementation and develop functionalities like products filtering, shopping cart(rendering items in it, adding buttons to change amount), making purchase, decorating products that are on promotion etc. There is no payment system included. API by one of the PATCH requests serves products that user bought and reduces stock size on each of them(provided that purchase was successful meaning if ordered products stocks were enough to make requested order).</p>
+
+<hr/>
 
 <h3>Notes</h3>
 
 <details>
     <summary>- Running project</summary> 
     
-Best way to run a project is getting CE IDE like JetBrains IntelliJ IDEA or any other you like and obtaining Java JDK to compile the project. 
+Best way to run a project is getting CE(Community Edition) IDE like JetBrains IntelliJ IDEA or any other you like and obtaining Java JDK to compile & run the project. 
 </details>
 
 <details>
     <summary>- Accessing Swagger</summary> 
     
-To access Swagger enter: ```http://localhost:8080/swagger-ui/``` in your browser <em>(pay attention to last slash)</em>
+To access Swagger enter: ```http://localhost:8080/swagger-ui/``` in your browser <em>(pay attention to the last slash)</em>
 </details>
 
 <details>
-    <summary>- H2 Database Details</summary> 
+    <summary>- H2 Database usage</summary> 
     
-<p align="justify">Access database console by entering: <code>http://localhost:8080/h2-console</code> in your browser <em>(credentials are stored in application.properties file)</em>. Project is using persistent mode. Database sample with some precreated objects is stored in the repository and will be read as soon as you launch project. If you want to have empty database on each start, you can do <strong>one</strong> of these steps below: <br/><br/>
+<p align="justify">If API is running, access database console by entering: <code>http://localhost:8080/h2-console</code> in your browser <em>(credentials are stored in application.properties file)</em>. Project is using persistent mode. Database sample with some precreated objects is stored in the repository and will be read as soon as you launch project. If you want to have empty database on each run, you can do <strong>one</strong> of the steps described below: <br/><br/>
 &nbsp; 1) Remove line <code>spring.jpa.hibernate.ddl-auto=update</code> from <code>application.properties</code>. <br/> &nbsp; <em>In result on every app launch H2 will perform DROP TABLE operation.</em> <br/><br/>
 &nbsp; 2) Overwrite line <code>spring.datasource.url=jdbc:h2:file:./data/sample</code> with <code>jdbc:h2:mem:testdb</code> <br/> &nbsp; <em>This way app will use nonpersistent, "in-memory" database.</em>
 </p>
 </details>
 
 <details>
-    <summary>- Products filtering (examples)</summary> 
+    <summary>- Filtering products</summary> 
     
-GET method responsible for fetching all products is extended with optional search parameter with which you can pass property name, operation and value to filter results. Every property from ProductQueryDto <strong>except percentagePriceDiff</strong> can be requested to be filtered. Available operations are: :(equal), >(greater or equal), <(less or equal).
+Except percentagePriceDiffEvery, every property from ProductQueryDto showed below can be requested to be filtered in <code>key{operation}value</code> scheme. Available operations are: :(equal), >(greater or equal), <(less or equal).
 
 ```java
 public class ProductQueryDto {
@@ -46,7 +48,7 @@ public class ProductQueryDto {
     private String measurement;
     private BigDecimal previousPrice;   
     private Integer percentagePriceDiff;   // returns % difference between price and previousPrice
-    private String priceStatus;            // rise/discount/unchanged
+    private String priceStatus;
     
     // getters and setters skipped for brievity
 }
@@ -62,7 +64,7 @@ Filters can be chained to shorten results like below:
 
 ```http://localhost:8080/api/v1/products?search=categoryId:1,price>15```
 
-If you would like to get products that are on discount:
+If you would like to get products that are on discount you would send request:
 
 ```http://localhost:8080/api/v1/products?search=priceStatus:discount```
 </details>
@@ -71,7 +73,7 @@ If you would like to get products that are on discount:
     <summary>- Explained Stock update PATCH requests</summary> 
 
 <p align="justify">
-    Request <code>/products/{id}/stock</code> updates stock for <strong>single product overwriting currently stored</strong> data while the other one - <code>/api/v1/products/order</code> - allows to update database information when someone orders chosen product(s). To use the second method, API expects that you send in body an array with specific order: <code>{ProductId}, {Amount}</code>. Note that before API applies changes to sent products stocks, it will verify if there is enough of each product to make order. See JSON example below for <code>/api/v1/products/order</code> action:
+    Request <code>/products/{id}/stock</code> updates stock for <strong>single product overwriting currently stored</strong> data while the other one -> <code>/api/v1/products/order</code> - allows to update database information when someone orders chosen product(s). To use the second method, you need to send in body an array with specific order: <code>{ProductId}, {Amount}</code>. Note that before API applies changes to sent products stocks, it will verify if there is enough of each product to make order. See JSON example below for <code>/api/v1/products/order</code> action on how order should look like:
 </p>
 
 ```
@@ -84,6 +86,8 @@ If you would like to get products that are on discount:
 // 68 -> amount of product identified with 97 that user ordered
 ```
 </details>
+
+<hr/>
 
 <h3>Available actions</h3>
 
@@ -127,6 +131,8 @@ If you would like to get products that are on discount:
 | (2) | <em>Return Product within given id</em> | GET | ```/products/{id}``` | 200 | Returns single product. |
 </details>
 
+<hr/>
+
 <h3>Changelog</h3>
 
 <strong>[ 04.10.2020, 1.1.1 ]</strong>
@@ -140,6 +146,8 @@ If you would like to get products that are on discount:
     - Moved categoryId, category, priceStatus predicates into ProductPredicate(categoryId, category are called within Product model)
     - Extraced setting percentagePriceDiff and adding params to ProductPredicateBuilder into separate methods
 - Added 400(Bad request) response for getAllProducts() in case of trying to filter via percentagePriceDiff
+
+<hr/>
 
 <details>
     <summary>- Used tools and technologies</summary> 
