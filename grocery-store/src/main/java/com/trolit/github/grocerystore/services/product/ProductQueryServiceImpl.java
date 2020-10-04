@@ -51,6 +51,7 @@ public class ProductQueryServiceImpl implements ProductQueryService {
         Iterable<Product> result;
         if (search != null) {
             ProductPredicatesBuilder productPredicatesBuilder = new ProductPredicatesBuilder();
+            addParamsToPredicatesBuilder(productPredicatesBuilder, search);
             BooleanExpression productExpression = productPredicatesBuilder.build();
             result = productRepository.findAll(productExpression);
         } else {
@@ -72,6 +73,15 @@ public class ProductQueryServiceImpl implements ProductQueryService {
         return productsList;
     }
 
+    private void addParamsToPredicatesBuilder(ProductPredicatesBuilder productPredicatesBuilder,
+                                                                  String search) {
+        Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?|\\w+?%20\\w+?),");
+        Matcher matcher = pattern.matcher(search + ",");
+        while (matcher.find()) {
+            String key = matcher.group(1);
+            String operation = matcher.group(2);
+            String value = matcher.group(3);
+            productPredicatesBuilder.with(key, operation, value);
         }
     }
 }
