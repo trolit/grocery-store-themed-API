@@ -34,7 +34,7 @@ public class ProductQueryController {
     @ResponseStatus(value = HttpStatus.OK)
     public ResponseEntity<List<ProductQueryDto>> getAllProducts(
             @RequestParam(value = "search", required = false) String search) {
-        if (search.contains("percentagePriceDiff")) {
+        if (search != null && search.contains("percentagePriceDiff")) {
             return ResponseEntity
                     .badRequest()
                     .build();
