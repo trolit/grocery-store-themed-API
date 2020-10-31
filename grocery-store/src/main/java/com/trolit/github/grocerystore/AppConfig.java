@@ -6,6 +6,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
@@ -18,7 +20,7 @@ import java.util.Collections;
 import static com.trolit.github.grocerystore.converters.StringConverters.basicPropertyConverter;
 
 @Configuration
-public class AppConfig {
+public class AppConfig implements WebMvcConfigurer {
 
     @Bean
     public Docket api() {
@@ -29,6 +31,13 @@ public class AppConfig {
                 .paths(PathSelectors.any())
                 .build()
                 .apiInfo(getApiInfo());
+    }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/api/v1/**")
+                .allowedMethods("*")
+                .allowedOrigins("http://localhost:4200");
     }
 
     private ApiInfo getApiInfo() {

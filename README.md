@@ -135,6 +135,10 @@ If you would like to get products that are on discount you would send request:
 
 <h3>Changelog</h3>
 
+<strong>[ 01.11.2020, 1.1.2 ]</strong>
+
+- Added default CORS policy
+
 <strong>[ 04.10.2020, 1.1.1 ]</strong>
 
 - Extended product model with previousPrice property
