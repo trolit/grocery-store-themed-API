@@ -1,6 +1,7 @@
 package com.trolit.github.grocerystore.services.product;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.trolit.github.grocerystore.dto.product.ProductMeasurementOnlyDto;
 import com.trolit.github.grocerystore.dto.product.ProductQueryDto;
 import com.trolit.github.grocerystore.models.Product;
 import com.trolit.github.grocerystore.predicates.ProductPredicatesBuilder;
@@ -36,8 +37,13 @@ public class ProductQueryServiceImpl implements ProductQueryService {
         if(productRepository.findById(id).isPresent()) {
             Product product = productRepository.findById(id).get();
             ProductQueryDto productQueryDto = modelMapper.map(product, ProductQueryDto.class);
+            BigDecimal previousProductPrice = product.getPreviousPrice();
             productQueryDto.setPercentagePriceDiff(
-                    returnPercentageDiffBetweenPrices(product.getPrice(), product.getPreviousPrice()));
+                    returnPercentageDiffBetweenPrices(
+                            product.getPrice(),
+                            previousProductPrice == null ? BigDecimal.ZERO : previousProductPrice
+                    )
+            );
             productQueryDto.setPriceStatus(getPriceStatus(product.getPrice(), product.getPreviousPrice()));
             return productQueryDto;
         } else {
@@ -65,6 +71,14 @@ public class ProductQueryServiceImpl implements ProductQueryService {
             productsList.add(productQueryDto);
         }
         return productsList;
+    }
+
+    @Override
+    public List<ProductMeasurementOnlyDto> getAllMeasurements() {
+        List<ProductMeasurementOnlyDto> measurementsList = new ArrayList<>();
+        productRepository.findAllUniqueMeasurements().forEach(measurement ->
+                measurementsList.add(new ProductMeasurementOnlyDto(measurement)));
+        return measurementsList;
     }
 
     private void setProductQueryDtoPercentageDiff(ProductQueryDto productQueryDto,

@@ -81,7 +81,7 @@ public class ProductCommandServiceImpl implements ProductCommandService {
     public int buyProducts(List<String> productsWithQuantity) {
         boolean isOrderPossible = checkIfProductsOrderIsPossible(productsWithQuantity);
         if (isOrderPossible) {
-            for (int i = 0; i < productsWithQuantity.size(); i++) {
+            for (int i = 0; i < productsWithQuantity.size(); i+=2) {
                 if (i + 1 >= productsWithQuantity.size()) {
                     break;
                 }
@@ -108,18 +108,21 @@ public class ProductCommandServiceImpl implements ProductCommandService {
     }
 
     @Override
-    public int changeProductPriceByPercentage(int id, ProductPriceChangeDto productPriceChangeDto) {
+    public UpdatedProductPriceDto changeProductPriceByPercentage(int id, ProductPriceChangeDto productPriceChangeDto) {
         if (isProductPresent(id)) {
+            BigDecimal currentPrice = getCurrentPrice(id);
             Product product = getProductById(id);
             BigDecimal newPrice = product.getPrice()
                     .multiply(new BigDecimal(productPriceChangeDto.getPercentage()))
                     .divide(new BigDecimal(100), 2, RoundingMode.HALF_UP);
-            product.setPreviousPrice(getCurrentPrice(id));
+            product.setPreviousPrice(currentPrice);
             product.setPrice(newPrice);
             productRepository.save(product);
-            return 1;
+            return new UpdatedProductPriceDto(id, newPrice, currentPrice,
+                    returnPercentageDiffBetweenPrices(newPrice, currentPrice),
+                    getPriceStatus(newPrice, currentPrice));
         } else {
-            return 0;
+            return new UpdatedProductPriceDto();
         }
     }
 
@@ -148,7 +151,7 @@ public class ProductCommandServiceImpl implements ProductCommandService {
 
     private boolean checkIfProductsOrderIsPossible(List<String> productsWithQuantity) {
         boolean flag = false;
-        for (int i = 0; i < productsWithQuantity.size(); i++) {
+        for (int i = 0; i < productsWithQuantity.size(); i+=2) {
             if (i + 1 >= productsWithQuantity.size()) {
                 break;
             }

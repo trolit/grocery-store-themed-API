@@ -3,18 +3,12 @@
 <img height="100" src="https://img.shields.io/badge/--white?logo=java&logoColor=orange&style=for-the-badge"/>
 <img height="100" src="https://img.shields.io/badge/--white?logo=apache%20maven&logoColor=orange&style=for-the-badge"/>
 </p>
-<h2 align="center"> Grocery Store API (v1.1.1)</h2>
-<p align="justify">RESTFul API Maven project made in Java 14 and 2.3.4.RELEASE Spring Boot after <a href="https://github.com/trolit/car-themed-API" draggable="false">car themed API (.NET Core 3.1)</a>. This API can serve for e.g. as groundwork to practise front-end implementation and develop functionalities like products filtering, shopping cart(rendering items in it, adding buttons to change amount), making purchase, decorating products that are on promotion etc. There is no payment system included. API by one of the PATCH requests serves products that user bought and reduces stock size on each of them(provided that purchase was successful meaning if ordered products stocks were enough to make requested order).</p>
+<h2 align="center"> Grocery Store API (v1.2.2)</h2>
+<p align="justify">RESTFul API Maven project made in Java 14 and 2.3.4.RELEASE Spring Boot after <a href="https://github.com/trolit/car-themed-API" draggable="false">car themed API (.NET Core 3.1)</a>. This API can serve for e.g. as groundwork to practise front-end implementation and develop functionalities like products filtering, shopping cart(rendering items in it, adding buttons to change amount), making purchase, decorating products that are on promotion etc. There is no payment system included. API by one of the PATCH requests serves products that user bought and reduces stock size on each of them(provided that purchase was successful ~> meaning if ordered products stocks were enough to make requested order). Example of front-end implementation in Angular 10 can be found <a href="https://github.com/trolit/grocery-store-angular">here</a>.</p>
 
 <hr/>
 
 <h3>Notes</h3>
-
-<details>
-    <summary>- Running project</summary> 
-    
-Best way to run a project is getting CE(Community Edition) IDE like JetBrains IntelliJ IDEA or any other you like and obtaining Java JDK to compile & run the project. 
-</details>
 
 <details>
     <summary>- Accessing Swagger</summary> 
@@ -118,7 +112,7 @@ If you would like to get products that are on discount you would send request:
 | (1) | <em>Create Product</em> | POST | ```/products``` | 201 | New Product is created. |
 | (2) | <em>Update Product</em> | PUT | ```/products/{id}``` | 200 | Product is updated. |
 | (3) | <em>Delete Product</em> | DELETE | ```/products/{id}``` | 204 | Product is deleted. |
-| (4) | <em>Change Product's price by percentage</em> | PATCH | ```/products/{id}/price``` | 204 | Product price is updated according to given percentage. |
+| (4) | <em>Change Product's price by percentage</em> | PATCH | ```/products/{id}/price``` | 200 | Product price is updated according to given percentage. |
 | (5) | <em>Update <strong>Product's</strong> stock</em> | PATCH | ```/products/{id}/stock``` | 204 | Requested Product's stock is updated. |
 | (6) | <em>Update <strong>Products</strong> stocks</em> | PATCH | ```/products/order``` | 204 | Given products stocks are reduced by requested amount. |
 </details>
@@ -130,10 +124,26 @@ If you would like to get products that are on discount you would send request:
 | (1) | <em>Return Products (can be filtered)</em> | GET | ```/products``` | 200 | Fetches all products. |
 | (2) | <em>Return Product within given id</em> | GET | ```/products/{id}``` | 200 | Returns single product. |
 </details>
+<details>
+    <summary>Connection Controller</summary> 
+
+| Sr. No. | Operation <img width=350/> | HTTP Method | Path <br/> ```/api/v1``` <img width=200/> | Status Code | Description <img width=200/> |
+| :---: | :---: | :---: | :---: | :---: | :---: |
+| (1) | <em>Returns OK HttpStatus</em> | GET | ```/online``` | 200 | Returns OK if API processes the request. |
+</details>
 
 <hr/>
 
 <h3>Changelog</h3>
+
+<strong>[ 27.11.2020, 1.2.2 ]</strong>
+
+- Added simple action within ConnectionController that allows to check if API is online
+- Added action to ProductsController that returns all available measurements
+- Fixed case of null previous price in getProduct function
+- Changed return value for changeProductPriceByPercentage(from int to custom dto)
+- Fixed checkIfProductsOrderIsPossible and buyProducts functions
+- Changed filtering rule from greater-equal/less-equal to greater-than/less-than
 
 <strong>[ 01.11.2020, 1.1.2 ]</strong>
 

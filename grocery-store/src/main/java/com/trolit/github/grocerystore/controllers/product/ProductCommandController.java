@@ -37,8 +37,7 @@ public class ProductCommandController {
                     .badRequest()
                     .build();
         } else {
-            return new ResponseEntity<>(
-                    productCommandService.createProduct(productCreateDto), HttpStatus.CREATED);
+            return new ResponseEntity<>(result, HttpStatus.CREATED);
         }
     }
 
@@ -129,16 +128,15 @@ public class ProductCommandController {
     @ApiOperation(value = "Changes product price by percentage")
     @ApiDescription(value = "notes/changeProductPriceDesc.md")
     @ApiResponses(value = {
-            @ApiResponse(code = 204, message = "Product's price updated"),
+            @ApiResponse(code = 200, message = "Product price updated"),
             @ApiResponse(code = 400, message = "Product not found")})
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> changeProductPriceByPercentage(@PathVariable(value = "id") int id,
+    @ResponseStatus(value = HttpStatus.OK)
+    public ResponseEntity<UpdatedProductPriceDto> changeProductPriceByPercentage(@PathVariable(value = "id") int id,
                                                                  @Valid @RequestBody ProductPriceChangeDto productPriceChangeDto) {
-        int result = productCommandService.changeProductPriceByPercentage(id, productPriceChangeDto);
-        if (result == 1) {
+        UpdatedProductPriceDto result = productCommandService.changeProductPriceByPercentage(id, productPriceChangeDto);
+        if (result.getPrice() != null) {
             return ResponseEntity
-                    .noContent()
-                    .build();
+                    .ok(result);
         } else {
             return ResponseEntity
                     .badRequest()

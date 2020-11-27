@@ -16,6 +16,6 @@ public interface ProductCommandService {
 
     int setProductStock(int id, ProductStockOnlyDto productStockOnlyDto);
 
-    int changeProductPriceByPercentage(int id, ProductPriceChangeDto productPriceChangeDto);
+    UpdatedProductPriceDto changeProductPriceByPercentage(int id, ProductPriceChangeDto productPriceChangeDto);
 
 }

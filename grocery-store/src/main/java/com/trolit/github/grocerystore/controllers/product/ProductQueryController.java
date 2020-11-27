@@ -1,5 +1,6 @@
 package com.trolit.github.grocerystore.controllers.product;
 
+import com.trolit.github.grocerystore.dto.product.ProductMeasurementOnlyDto;
 import com.trolit.github.grocerystore.dto.product.ProductQueryDto;
 import com.trolit.github.grocerystore.plugins.ApiDescription;
 import com.trolit.github.grocerystore.services.product.ProductQueryService;
@@ -64,6 +65,23 @@ public class ProductQueryController {
                     .build();
         } else {
             return new ResponseEntity<>(product, HttpStatus.OK);
+        }
+    }
+
+    @GetMapping(path = "measurements")
+    @ApiOperation(value = "Returns all existing measurements")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Returned at least one measurement"),
+            @ApiResponse(code = 204, message = "Request processed but no measurements found")})
+    @ResponseStatus(value = HttpStatus.OK)
+    public ResponseEntity<List<ProductMeasurementOnlyDto>> getMeasurements(){
+        List<ProductMeasurementOnlyDto> measurements = productQueryService.getAllMeasurements();
+        if (measurements.size() <= 0) {
+            return ResponseEntity
+                    .noContent()
+                    .build();
+        } else {
+            return new ResponseEntity<>(measurements, HttpStatus.OK);
         }
     }
 }

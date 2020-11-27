@@ -27,9 +27,9 @@ public class ProductPredicate {
                 case ":":
                     return path.eq(value);
                 case ">":
-                    return path.goe(value);
+                    return path.gt(value);
                 case "<":
-                    return path.loe(value);
+                    return path.lt(value);
             }
         }
         else {
