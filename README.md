@@ -4,7 +4,7 @@
 <img height="100" src="https://img.shields.io/badge/--white?logo=apache%20maven&logoColor=orange&style=for-the-badge"/>
 </p>
 <h2 align="center"> Grocery Store API (v1.2.2)</h2>
-<p align="justify">RESTFul Maven project made in Java 14 and 2.3.4.RELEASE Spring Boot. API can serve for e.g. as groundwork to practise front-end implementation and develop functionalities like products filtering, shopping cart(rendering items in it, adding buttons to reassign amount), making purchase, decorating products that are on promotion etc. There is no payment system included. API by one of the PATCH requests serves products that user bought and reduces stock size on each of them on the backend(provided that purchase was successful ~> meaning if ordered products stocks were enough to make requested order). <br/><br/> Example of front-end implementation in Angular 10 can be found <a href="https://github.com/trolit/grocery-store-angular">here</a>.</p>
+<p align="justify">Maven project made in Java 14 and 2.3.4.RELEASE Spring Boot. API can serve for e.g. as groundwork to practise front-end implementation and develop functionalities like products filtering, shopping cart(rendering items in it, adding buttons to reassign amount), making purchase, decorating products that are on promotion etc. There is no payment system included. API by one of the PATCH requests serves products that user bought and reduces stock size on each of them on the backend(provided that purchase was successful ~> meaning if ordered products stocks were enough to make requested order). <br/><br/> Example of front-end implementation in Angular 10 can be found <a href="https://github.com/trolit/grocery-store-angular">here</a>.</p>
 
 <hr/>
 
@@ -48,7 +48,7 @@ public class ProductQueryDto {
 }
 ```
 
-To return products that category is "Alcoholic Drinks" you could use <code>categoryId</code> or human readable <code>category</code>. When using name with whitespace, whitespace must be replaced with %20 encoding. See example below.
+To return products that category is "Alcoholic Drinks" you can use <code>categoryId</code> or human readable <code>category</code>. When using name with whitespace, whitespace must be replaced within %20 encoding. See examples below.
 
 ```http://localhost:8080/api/v1/products?search=categoryId:1```
 
